@@ -1,0 +1,310 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E7FF5FA6158C715400D4D79A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7FF5FA5158C715400D4D79A /* UIKit.framework */; };
+		E7FF5FA8158C715400D4D79A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7FF5FA7158C715400D4D79A /* Foundation.framework */; };
+		E7FF5FAA158C715400D4D79A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7FF5FA9158C715400D4D79A /* CoreGraphics.framework */; };
+		E7FF5FAC158C715400D4D79A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7FF5FAB158C715400D4D79A /* CoreData.framework */; };
+		E7FF5FB2158C715400D4D79A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E7FF5FB0158C715400D4D79A /* InfoPlist.strings */; };
+		E7FF5FB4158C715400D4D79A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E7FF5FB3158C715400D4D79A /* main.m */; };
+		E7FF5FB8158C715400D4D79A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E7FF5FB7158C715400D4D79A /* AppDelegate.m */; };
+		E7FF5FBB158C715400D4D79A /* BWSelectControllerExample.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E7FF5FB9158C715400D4D79A /* BWSelectControllerExample.xcdatamodeld */; };
+		E7FF5FC8158C74A700D4D79A /* BWSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7FF5FC7158C74A700D4D79A /* BWSelectViewController.m */; };
+		E7FF5FCF158C789600D4D79A /* ExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7FF5FCD158C789600D4D79A /* ExampleViewController.m */; };
+		E7FF5FD0158C789600D4D79A /* ExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7FF5FCE158C789600D4D79A /* ExampleViewController.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		E7FF5FA1158C715400D4D79A /* BWSelectControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BWSelectControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7FF5FA5158C715400D4D79A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E7FF5FA7158C715400D4D79A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E7FF5FA9158C715400D4D79A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		E7FF5FAB158C715400D4D79A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		E7FF5FAF158C715400D4D79A /* BWSelectControllerExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BWSelectControllerExample-Info.plist"; sourceTree = "<group>"; };
+		E7FF5FB1158C715400D4D79A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E7FF5FB3158C715400D4D79A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E7FF5FB5158C715400D4D79A /* BWSelectControllerExample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BWSelectControllerExample-Prefix.pch"; sourceTree = "<group>"; };
+		E7FF5FB6158C715400D4D79A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		E7FF5FB7158C715400D4D79A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		E7FF5FBA158C715400D4D79A /* BWSelectControllerExample.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BWSelectControllerExample.xcdatamodel; sourceTree = "<group>"; };
+		E7FF5FC6158C74A700D4D79A /* BWSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWSelectViewController.h; sourceTree = "<group>"; };
+		E7FF5FC7158C74A700D4D79A /* BWSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWSelectViewController.m; sourceTree = "<group>"; };
+		E7FF5FCC158C789600D4D79A /* ExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleViewController.h; sourceTree = "<group>"; };
+		E7FF5FCD158C789600D4D79A /* ExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleViewController.m; sourceTree = "<group>"; };
+		E7FF5FCE158C789600D4D79A /* ExampleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExampleViewController.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E7FF5F9E158C715400D4D79A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7FF5FA6158C715400D4D79A /* UIKit.framework in Frameworks */,
+				E7FF5FA8158C715400D4D79A /* Foundation.framework in Frameworks */,
+				E7FF5FAA158C715400D4D79A /* CoreGraphics.framework in Frameworks */,
+				E7FF5FAC158C715400D4D79A /* CoreData.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E7FF5F96158C715400D4D79A = {
+			isa = PBXGroup;
+			children = (
+				E7FF5FC5158C74A700D4D79A /* BWSelectViewController */,
+				E7FF5FAD158C715400D4D79A /* BWSelectControllerExample */,
+				E7FF5FA4158C715400D4D79A /* Frameworks */,
+				E7FF5FA2158C715400D4D79A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E7FF5FA2158C715400D4D79A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E7FF5FA1158C715400D4D79A /* BWSelectControllerExample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E7FF5FA4158C715400D4D79A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E7FF5FA5158C715400D4D79A /* UIKit.framework */,
+				E7FF5FA7158C715400D4D79A /* Foundation.framework */,
+				E7FF5FA9158C715400D4D79A /* CoreGraphics.framework */,
+				E7FF5FAB158C715400D4D79A /* CoreData.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E7FF5FAD158C715400D4D79A /* BWSelectControllerExample */ = {
+			isa = PBXGroup;
+			children = (
+				E7FF5FB6158C715400D4D79A /* AppDelegate.h */,
+				E7FF5FB7158C715400D4D79A /* AppDelegate.m */,
+				E7FF5FB9158C715400D4D79A /* BWSelectControllerExample.xcdatamodeld */,
+				E7FF5FAE158C715400D4D79A /* Supporting Files */,
+				E7FF5FCC158C789600D4D79A /* ExampleViewController.h */,
+				E7FF5FCD158C789600D4D79A /* ExampleViewController.m */,
+				E7FF5FCE158C789600D4D79A /* ExampleViewController.xib */,
+			);
+			path = BWSelectControllerExample;
+			sourceTree = "<group>";
+		};
+		E7FF5FAE158C715400D4D79A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E7FF5FAF158C715400D4D79A /* BWSelectControllerExample-Info.plist */,
+				E7FF5FB0158C715400D4D79A /* InfoPlist.strings */,
+				E7FF5FB3158C715400D4D79A /* main.m */,
+				E7FF5FB5158C715400D4D79A /* BWSelectControllerExample-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E7FF5FC5158C74A700D4D79A /* BWSelectViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E7FF5FC6158C74A700D4D79A /* BWSelectViewController.h */,
+				E7FF5FC7158C74A700D4D79A /* BWSelectViewController.m */,
+			);
+			path = BWSelectViewController;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E7FF5FA0158C715400D4D79A /* BWSelectControllerExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E7FF5FBE158C715400D4D79A /* Build configuration list for PBXNativeTarget "BWSelectControllerExample" */;
+			buildPhases = (
+				E7FF5F9D158C715400D4D79A /* Sources */,
+				E7FF5F9E158C715400D4D79A /* Frameworks */,
+				E7FF5F9F158C715400D4D79A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BWSelectControllerExample;
+			productName = BWSelectControllerExample;
+			productReference = E7FF5FA1158C715400D4D79A /* BWSelectControllerExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E7FF5F98158C715400D4D79A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = E7FF5F9B158C715400D4D79A /* Build configuration list for PBXProject "BWSelectControllerExample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E7FF5F96158C715400D4D79A;
+			productRefGroup = E7FF5FA2158C715400D4D79A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E7FF5FA0158C715400D4D79A /* BWSelectControllerExample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E7FF5F9F158C715400D4D79A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7FF5FB2158C715400D4D79A /* InfoPlist.strings in Resources */,
+				E7FF5FD0158C789600D4D79A /* ExampleViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E7FF5F9D158C715400D4D79A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7FF5FB4158C715400D4D79A /* main.m in Sources */,
+				E7FF5FB8158C715400D4D79A /* AppDelegate.m in Sources */,
+				E7FF5FBB158C715400D4D79A /* BWSelectControllerExample.xcdatamodeld in Sources */,
+				E7FF5FC8158C74A700D4D79A /* BWSelectViewController.m in Sources */,
+				E7FF5FCF158C789600D4D79A /* ExampleViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		E7FF5FB0158C715400D4D79A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E7FF5FB1158C715400D4D79A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E7FF5FBC158C715400D4D79A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E7FF5FBD158C715400D4D79A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E7FF5FBF158C715400D4D79A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BWSelectControllerExample/BWSelectControllerExample-Prefix.pch";
+				INFOPLIST_FILE = "BWSelectControllerExample/BWSelectControllerExample-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		E7FF5FC0158C715400D4D79A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BWSelectControllerExample/BWSelectControllerExample-Prefix.pch";
+				INFOPLIST_FILE = "BWSelectControllerExample/BWSelectControllerExample-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E7FF5F9B158C715400D4D79A /* Build configuration list for PBXProject "BWSelectControllerExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E7FF5FBC158C715400D4D79A /* Debug */,
+				E7FF5FBD158C715400D4D79A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E7FF5FBE158C715400D4D79A /* Build configuration list for PBXNativeTarget "BWSelectControllerExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E7FF5FBF158C715400D4D79A /* Debug */,
+				E7FF5FC0158C715400D4D79A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		E7FF5FB9158C715400D4D79A /* BWSelectControllerExample.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E7FF5FBA158C715400D4D79A /* BWSelectControllerExample.xcdatamodel */,
+			);
+			currentVersion = E7FF5FBA158C715400D4D79A /* BWSelectControllerExample.xcdatamodel */;
+			path = BWSelectControllerExample.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = E7FF5F98158C715400D4D79A /* Project object */;
+}
