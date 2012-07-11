@@ -23,12 +23,13 @@ typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths,
 
 @interface BWSelectViewController : UITableViewController
 
-@property (nonatomic, copy) NSArray *items;
+@property (nonatomic, copy) NSDictionary *sections;
 @property (nonatomic, strong) BWSelectViewControllerDidSelectBlock selectBlock;
 @property (nonatomic, readonly) NSMutableArray *selectedIndexPaths;
 @property (nonatomic, assign) BOOL multiSelection;
 @property (nonatomic, assign) Class cellClass;
 @property (nonatomic, assign) BOOL allowEmpty;
+@property (nonatomic, strong) NSArray *sectionOrders;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection
@@ -36,8 +37,19 @@ typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths,
       selectedItems:(NSArray *)selectedItems
         selectBlock:(BWSelectViewControllerDidSelectBlock)selectBlock;
 
+- (id)initWithSections:(NSDictionary *)sections
+                orders:(NSArray *)orders
+        multiselection:(BOOL)multiSelection
+            allowEmpty:(BOOL)allowEmpty
+         selectedItems:(NSArray *)selectedItems
+           selectBlock:(BWSelectViewControllerDidSelectBlock)selectBlock;
+
 - (void)setDidSelectBlock:(BWSelectViewControllerDidSelectBlock)didSelectBlock;
 
 - (void)setSlectedIndexPaths:(NSArray *)selectedIndexPaths;
+
+- (void)setItems:(NSArray *)items;
+
+- (void)setSections:(NSDictionary *)sections orders:(NSArray *)orders;
 
 @end

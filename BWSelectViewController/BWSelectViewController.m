@@ -19,11 +19,16 @@
 
 static NSString *CellIdentifier = @"Cell";
 
+#define TITLE_KEY @"title"
+#define ITEMS_KEY @"items"
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 @interface BWSelectViewController ()
+
+- (NSArray *)itemsFromSection:(NSInteger)section;
 
 @end
 
@@ -33,28 +38,51 @@ static NSString *CellIdentifier = @"Cell";
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 @implementation BWSelectViewController
 
-@synthesize items = _items;
+@synthesize sections = _sections;
 @synthesize selectedIndexPaths = _selectedIndexPaths;
 @synthesize multiSelection = _multiSelection;
 @synthesize cellClass = _cellClass;
 @synthesize allowEmpty = _allowEmpty;
 @synthesize selectBlock = _selectBlock;
+@synthesize sectionOrders = _sectionOrders;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)initWithItems:(NSArray *)items
-     multiselection:(BOOL)multiSelection
-         allowEmpty:(BOOL)allowEmpty
-      selectedItems:(NSArray *)selectedItems
-        selectBlock:(BWSelectViewControllerDidSelectBlock)selectBlock; {
+        multiselection:(BOOL)multiSelection
+            allowEmpty:(BOOL)allowEmpty
+         selectedItems:(NSArray *)selectedItems
+           selectBlock:(BWSelectViewControllerDidSelectBlock)selectBlock {
+    
+    self = [self initWithSections:nil
+                           orders:nil
+                   multiselection:multiSelection
+                       allowEmpty:allowEmpty
+                    selectedItems:selectedItems
+                      selectBlock:selectBlock];
+    
+    if (self) {
+        [self setItems:items];
+    }
+    return self;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (id)initWithSections:(NSDictionary *)sections
+                orders:(NSArray *)orders
+        multiselection:(BOOL)multiSelection
+            allowEmpty:(BOOL)allowEmpty
+         selectedItems:(NSArray *)selectedItems
+           selectBlock:(BWSelectViewControllerDidSelectBlock)selectBlock {
     
     self = [self init];
     if (self) {
-        self.items = items;
         self.multiSelection = multiSelection;
         self.allowEmpty = allowEmpty;
         [self.selectedIndexPaths addObjectsFromArray:selectedItems];
         self.selectBlock = selectBlock;
+        [self setSections:sections orders:orders];
     }
     return self;
 }
@@ -99,6 +127,27 @@ static NSString *CellIdentifier = @"Cell";
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+- (NSArray *)sectionOrders {
+    return (nil == _sectionOrders) ?
+        [[self.sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] :
+        _sectionOrders;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setItems:(NSArray *)items {
+    self.sections = [NSDictionary dictionaryWithObject:items forKey:@""];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setSections:(NSDictionary *)sections orders:(NSArray *)orders {
+    self.sections = sections;
+    self.sectionOrders = orders;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Table view data source
@@ -106,13 +155,19 @@ static NSString *CellIdentifier = @"Cell";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return [self.sections count];
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.items count];
+    return [[self itemsFromSection:section] count];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return [self.sectionOrders objectAtIndex:section];
 }
 
 
@@ -125,7 +180,7 @@ static NSString *CellIdentifier = @"Cell";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    cell.textLabel.text = [self.items objectAtIndex:indexPath.row];
+    cell.textLabel.text = [[self itemsFromSection:indexPath.section] objectAtIndex:indexPath.row];
     
     cell.accessoryType = [self.selectedIndexPaths containsObject:indexPath] ?
                          UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
@@ -162,6 +217,19 @@ static NSString *CellIdentifier = @"Cell";
     
     if (nil != self.selectBlock)
         self.selectBlock(self.selectedIndexPaths, self);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark Private
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (NSArray *)itemsFromSection:(NSInteger)section {
+    NSString *sectionKey = [self.sectionOrders objectAtIndex:section];
+    return [self.sections objectForKey:sectionKey];
 }
 
 
