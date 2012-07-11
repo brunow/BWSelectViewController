@@ -30,6 +30,7 @@ typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths,
 @property (nonatomic, assign) Class cellClass;
 @property (nonatomic, assign) BOOL allowEmpty;
 @property (nonatomic, strong) NSArray *sectionOrders;
+@property (nonatomic, strong) NSArray *items;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection
@@ -47,8 +48,6 @@ typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths,
 - (void)setDidSelectBlock:(BWSelectViewControllerDidSelectBlock)didSelectBlock;
 
 - (void)setSlectedIndexPaths:(NSArray *)selectedIndexPaths;
-
-- (void)setItems:(NSArray *)items;
 
 - (void)setSections:(NSDictionary *)sections orders:(NSArray *)orders;
 
