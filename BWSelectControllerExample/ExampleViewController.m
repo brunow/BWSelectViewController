@@ -109,6 +109,24 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (IBAction)didPresDropDown:(id)sender
+{
+    BWSelectViewController *vc = [[BWSelectViewController alloc] init];
+    NSArray *items1 = [NSArray arrayWithObjects:@"Item1", @"Item2", @"Item3", @"Item4", nil];
+    NSArray *items2 = [NSArray arrayWithObjects:@"Item1", @"Item2", nil];
+    NSDictionary *sections = [NSDictionary dictionaryWithObjectsAndKeys:items1, @"section1", items2, @"section2", nil];
+    [vc setSections:sections orders:[NSArray arrayWithObjects:@"section1", @"section2", nil]];
+    vc.multiSelection = NO;
+    vc.allowEmpty = NO;
+    vc.dropDownSection = YES;
+    
+    [vc setDidSelectBlock:^(NSArray *selectedIndexPaths, BWSelectViewController *controller) {
+        NSLog(@"%@", selectedIndexPaths);
+    }];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);

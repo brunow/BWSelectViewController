@@ -31,6 +31,7 @@ typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths,
 @property (nonatomic, assign) BOOL allowEmpty;
 @property (nonatomic, strong) NSArray *sectionOrders;
 @property (nonatomic, strong) NSArray *items;
+@property (nonatomic, assign) BOOL dropDownSection;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection

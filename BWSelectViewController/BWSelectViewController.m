@@ -30,6 +30,8 @@ static NSString *CellIdentifier = @"Cell";
 
 - (NSArray *)itemsFromSection:(NSInteger)section;
 
+- (BOOL)isSectionSelected:(NSInteger)section;
+
 @end
 
 
@@ -45,6 +47,7 @@ static NSString *CellIdentifier = @"Cell";
 @synthesize allowEmpty = _allowEmpty;
 @synthesize selectBlock = _selectBlock;
 @synthesize sectionOrders = _sectionOrders;
+@synthesize dropDownSection = _dropDownSection;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,6 +99,7 @@ static NSString *CellIdentifier = @"Cell";
         self.cellClass = [UITableViewCell class];
         self.allowEmpty = NO;
         _selectedIndexPaths = [[NSMutableArray alloc] init];
+        self.dropDownSection = NO;
     }
     return self;
 }
@@ -218,8 +222,10 @@ static NSString *CellIdentifier = @"Cell";
         [self.selectedIndexPaths addObject:indexPath];
     }
     
-    [self.tableView reloadRowsAtIndexPaths:indexPathsToReload
-                          withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadData];
+    
+//    [self.tableView reloadRowsAtIndexPaths:indexPathsToReload
+//                          withRowAnimation:UITableViewRowAnimationNone];
     
     if (nil != self.selectBlock)
         self.selectBlock(self.selectedIndexPaths, self);
@@ -233,9 +239,27 @@ static NSString *CellIdentifier = @"Cell";
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+- (BOOL)isSectionSelected:(NSInteger)section {
+    for (NSIndexPath *indexPath in self.selectedIndexPaths) {
+        if (indexPath.section == section) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSArray *)itemsFromSection:(NSInteger)section {
     NSString *sectionKey = [self.sectionOrders objectAtIndex:section];
-    return [self.sections objectForKey:sectionKey];
+    NSArray *items = [self.sections objectForKey:sectionKey];
+    
+    if (self.dropDownSection && NO == [self isSectionSelected:section]) {
+        items = [NSArray arrayWithObject:[items objectAtIndex:0]];
+    }
+    
+    return items;
 }
 
 
