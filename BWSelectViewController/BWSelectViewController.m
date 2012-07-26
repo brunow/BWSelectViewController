@@ -226,7 +226,7 @@ static NSString *CellIdentifier = @"Cell";
     
     [self.tableView scrollToRowAtIndexPath:indexPath
                           atScrollPosition:UITableViewScrollPositionNone
-                                  animated:YES];
+                                  animated:NO];
     
 //    [self.tableView reloadRowsAtIndexPaths:indexPathsToReload
 //                          withRowAnimation:UITableViewRowAnimationNone];
