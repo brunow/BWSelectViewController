@@ -93,7 +93,13 @@ static NSString *CellIdentifier = @"Cell";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)init {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    return [self initWithStyle:UITableViewStyleGrouped];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (id)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:style];
     if (self) {
         self.multiSelection = NO;
         self.cellClass = [UITableViewCell class];
