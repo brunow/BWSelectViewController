@@ -164,6 +164,50 @@ static NSString *CellIdentifier = @"Cell";
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+- (id)objectWithIndexPath:(NSIndexPath *)indexPath {
+    return [[self itemsFromSection:indexPath.section] objectAtIndex:indexPath.row];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (NSArray *)selectedObjects {
+    NSMutableArray *objects = [NSMutableArray array];
+    
+    [self.selectedIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
+        [objects addObject:[self objectWithIndexPath:indexPath]];
+    }];
+    
+    return objects;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setSelectedIndexPathsWithObject:(id)object {
+    [self setSelectedIndexPathsWithObjects:[NSArray arrayWithObject:object]];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setSelectedIndexPathsWithObjects:(NSArray *)objects {
+    [objects enumerateObjectsUsingBlock:^(id objectWeSearch, NSUInteger idx, BOOL *stopObjectFinding) {
+        [self.sections enumerateKeysAndObjectsUsingBlock:^(id key, NSArray *sectionItems, BOOL *stopSectionEnumerating) {
+            [sectionItems enumerateObjectsUsingBlock:^(id possibleObject, NSUInteger itemsIdx, BOOL *stopItemsEnumerating) {
+                if (objectWeSearch == possibleObject) {
+                    NSIndexPath *objectIndexPath = [NSIndexPath indexPathForRow:itemsIdx
+                                                                      inSection:[self.sectionOrders indexOfObject:key]];
+
+                    [self.selectedIndexPaths addObject:objectIndexPath];
+                    
+                    *stopItemsEnumerating = YES;
+                    *stopSectionEnumerating = YES;
+                }
+            }];
+        }];
+    }];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Table view data source
@@ -196,7 +240,19 @@ static NSString *CellIdentifier = @"Cell";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    cell.textLabel.text = [[self itemsFromSection:indexPath.section] objectAtIndex:indexPath.row];
+    id object = [self objectWithIndexPath:indexPath];
+    
+    if (![object isKindOfClass:[NSString class]]) {
+        
+        if (nil != self.textForObjectBlock) {
+            object = self.textForObjectBlock(object);
+        } else {
+            object = nil;
+        }
+        
+    }
+    
+    cell.textLabel.text = (NSString *)object;
     
     cell.accessoryType = [self.selectedIndexPaths containsObject:indexPath] ?
                          UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;

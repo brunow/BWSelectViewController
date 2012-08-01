@@ -21,6 +21,8 @@
 
 typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths, BWSelectViewController *controller);
 
+typedef NSString *(^BWSelectViewControllerTextForObjectBlock)(id object);
+
 @interface BWSelectViewController : UITableViewController
 
 @property (nonatomic, copy) NSDictionary *sections;
@@ -32,6 +34,7 @@ typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths,
 @property (nonatomic, strong) NSArray *sectionOrders;
 @property (nonatomic, strong) NSArray *items;
 @property (nonatomic, assign) BOOL dropDownSection;
+@property (nonatomic, copy) BWSelectViewControllerTextForObjectBlock textForObjectBlock;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection
@@ -51,5 +54,15 @@ typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths,
 - (void)setSlectedIndexPaths:(NSArray *)selectedIndexPaths;
 
 - (void)setSections:(NSDictionary *)sections orders:(NSArray *)orders;
+
+- (void)setTextForObjectBlock:(BWSelectViewControllerTextForObjectBlock)textForObjectBlock;
+
+- (id)objectWithIndexPath:(NSIndexPath *)indexPath;
+
+- (NSArray *)selectedObjects;
+
+- (void)setSelectedIndexPathsWithObject:(id)object;
+
+- (void)setSelectedIndexPathsWithObjects:(NSArray *)objects;
 
 @end
