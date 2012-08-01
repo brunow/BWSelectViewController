@@ -35,6 +35,7 @@ typedef NSString *(^BWSelectViewControllerTextForObjectBlock)(id object);
 @property (nonatomic, strong) NSArray *items;
 @property (nonatomic, assign) BOOL dropDownSection;
 @property (nonatomic, copy) BWSelectViewControllerTextForObjectBlock textForObjectBlock;
+@property (nonatomic, assign) UITableViewScrollPosition scrollToRowScrollPositionOnSelect;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection

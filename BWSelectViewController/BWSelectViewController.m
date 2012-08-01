@@ -106,6 +106,7 @@ static NSString *CellIdentifier = @"Cell";
         self.allowEmpty = NO;
         _selectedIndexPaths = [[NSMutableArray alloc] init];
         self.dropDownSection = NO;
+        self.scrollToRowScrollPositionOnSelect = UITableViewScrollPositionNone;
     }
     return self;
 }
@@ -287,8 +288,8 @@ static NSString *CellIdentifier = @"Cell";
     [self.tableView reloadData];
     
     [self.tableView scrollToRowAtIndexPath:indexPath
-                          atScrollPosition:UITableViewScrollPositionNone
-                                  animated:NO];
+                          atScrollPosition:self.scrollToRowScrollPositionOnSelect
+                                  animated:(UITableViewScrollPositionNone != self.scrollToRowScrollPositionOnSelect) ? YES : NO];
     
 //    [self.tableView reloadRowsAtIndexPaths:indexPathsToReload
 //                          withRowAnimation:UITableViewRowAnimationNone];
