@@ -119,6 +119,20 @@ static NSString *CellIdentifier = @"Cell";
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if (self.selectedIndexPaths.count > 0) {
+        NSIndexPath *selectedIndexPath = [self.selectedIndexPaths lastObject];
+        
+        [self.tableView scrollToRowAtIndexPath:selectedIndexPath
+                              atScrollPosition:UITableViewScrollPositionTop
+                                      animated:NO];
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
