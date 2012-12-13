@@ -8,6 +8,10 @@ Controller that show a list of items that can be selectable.
 
 **Copy** **BWSelectViewController** dir into your project.
 
+Or with **Cocoapods**
+
+	pod 'BWSelectViewController', :git => "https://github.com/brunow/BWSelectViewController.git", :tag => "0.1.1"
+
 ## How to use it
 
     BWSelectViewController *vc = [[BWSelectViewController alloc] init];
