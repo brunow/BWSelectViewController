@@ -20,6 +20,7 @@
 @class BWSelectViewController;
 
 typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths, BWSelectViewController *controller);
+typedef BOOL(^BWSelectViewControllerSelectedObject)(id object);
 
 typedef NSString *(^BWSelectViewControllerTextForObjectBlock)(id object);
 
@@ -36,6 +37,7 @@ typedef NSString *(^BWSelectViewControllerTextForObjectBlock)(id object);
 @property (nonatomic, assign) BOOL dropDownSection;
 @property (nonatomic, copy) BWSelectViewControllerTextForObjectBlock textForObjectBlock;
 @property (nonatomic, assign) UITableViewScrollPosition scrollToRowScrollPositionOnSelect;
+@property (nonatomic, copy) BWSelectViewControllerSelectedObject selectedObjectBlock;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection
@@ -49,6 +51,8 @@ typedef NSString *(^BWSelectViewControllerTextForObjectBlock)(id object);
             allowEmpty:(BOOL)allowEmpty
          selectedItems:(NSArray *)selectedItems
            selectBlock:(BWSelectViewControllerDidSelectBlock)selectBlock;
+
+- (void)setSelectedObjectBlock:(BWSelectViewControllerSelectedObject)selectedObjectBlock;
 
 - (void)setDidSelectBlock:(BWSelectViewControllerDidSelectBlock)didSelectBlock;
 

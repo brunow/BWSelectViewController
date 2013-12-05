@@ -126,7 +126,7 @@ static NSString *CellIdentifier = @"Cell";
         NSIndexPath *selectedIndexPath = [self.selectedIndexPaths lastObject];
         
         [self.tableView scrollToRowAtIndexPath:selectedIndexPath
-                              atScrollPosition:UITableViewScrollPositionTop
+                              atScrollPosition:UITableViewScrollPositionMiddle
                                       animated:NO];
     }
 }
@@ -207,7 +207,10 @@ static NSString *CellIdentifier = @"Cell";
     [objects enumerateObjectsUsingBlock:^(id objectWeSearch, NSUInteger idx, BOOL *stopObjectFinding) {
         [self.sections enumerateKeysAndObjectsUsingBlock:^(id key, NSArray *sectionItems, BOOL *stopSectionEnumerating) {
             [sectionItems enumerateObjectsUsingBlock:^(id possibleObject, NSUInteger itemsIdx, BOOL *stopItemsEnumerating) {
-                if (objectWeSearch == possibleObject) {
+                if (objectWeSearch == possibleObject ||
+                    [objectWeSearch isEqual:possibleObject] ||
+                    (nil != self.selectedObjectBlock && self.selectedObjectBlock(possibleObject))) {
+                    
                     NSIndexPath *objectIndexPath = [NSIndexPath indexPathForRow:itemsIdx
                                                                       inSection:[self.sectionOrders indexOfObject:key]];
 
