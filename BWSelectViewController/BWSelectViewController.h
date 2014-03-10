@@ -38,6 +38,7 @@ typedef NSString *(^BWSelectViewControllerTextForObjectBlock)(id object);
 @property (nonatomic, copy) BWSelectViewControllerTextForObjectBlock textForObjectBlock;
 @property (nonatomic, assign) UITableViewScrollPosition scrollToRowScrollPositionOnSelect;
 @property (nonatomic, copy) BWSelectViewControllerSelectedObject selectedObjectBlock;
+@property (nonatomic, strong) UIColor *textColor;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection

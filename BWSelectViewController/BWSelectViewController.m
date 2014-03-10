@@ -107,6 +107,7 @@ static NSString *CellIdentifier = @"Cell";
         _selectedIndexPaths = [[NSMutableArray alloc] init];
         self.dropDownSection = NO;
         self.scrollToRowScrollPositionOnSelect = UITableViewScrollPositionNone;
+        self.textColor = [UIColor blackColor];
     }
     return self;
 }
@@ -256,6 +257,7 @@ static NSString *CellIdentifier = @"Cell";
     if (nil == cell) {
         cell = [[self.cellClass alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.textColor = self.textColor;
     }
     
     id object = [self objectWithIndexPath:indexPath];
