@@ -10,7 +10,7 @@ Controller that show a list of items that can be selectable.
 
 Or with **Cocoapods**
 
-	pod 'BWSelectViewController', :git => "https://github.com/brunow/BWSelectViewController.git", :tag => "0.2.0"
+	pod 'BWSelectViewController', :git => "https://github.com/brunow/BWSelectViewController.git", :tag => "0.3.0"
 
 ## How to use it
 
