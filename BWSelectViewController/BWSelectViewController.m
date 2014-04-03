@@ -23,10 +23,36 @@ static NSString *CellIdentifier = @"Cell";
 #define ITEMS_KEY @"items"
 
 
+static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
+    if (!view || classNameSuffix.length == 0) return nil;
+    
+    UIView *theView = nil;
+    for (__unsafe_unretained UIView *subview in view.subviews) {
+        if ([NSStringFromClass(subview.class) hasSuffix:classNameSuffix]) {
+            return subview;
+        }else {
+            if ((theView = PSPDFViewWithSuffix(subview, classNameSuffix))) break;
+        }
+    }
+    return theView;
+}
+
+
+@interface BWSelectView : UIView
+
+@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, assign) BOOL allowSearch;
+
+@end
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 @interface BWSelectViewController ()
+
+@property (nonatomic, strong) NSArray *searchItems;
 
 - (NSArray *)itemsFromSection:(NSInteger)section;
 
@@ -52,10 +78,10 @@ static NSString *CellIdentifier = @"Cell";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)initWithItems:(NSArray *)items
-        multiselection:(BOOL)multiSelection
-            allowEmpty:(BOOL)allowEmpty
-         selectedItems:(NSArray *)selectedItems
-           selectBlock:(BWSelectViewControllerDidSelectBlock)selectBlock {
+     multiselection:(BOOL)multiSelection
+         allowEmpty:(BOOL)allowEmpty
+      selectedItems:(NSArray *)selectedItems
+        selectBlock:(BWSelectViewControllerDidSelectBlock)selectBlock {
     
     self = [self initWithSections:nil
                            orders:nil
@@ -101,22 +127,74 @@ static NSString *CellIdentifier = @"Cell";
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
     if (self) {
+        self.selectView = [[BWSelectView alloc] init];
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
         self.multiSelection = NO;
         self.cellClass = [UITableViewCell class];
         self.allowEmpty = NO;
         _selectedIndexPaths = [[NSMutableArray alloc] init];
         self.dropDownSection = NO;
         self.scrollToRowScrollPositionOnSelect = UITableViewScrollPositionNone;
-        self.textColor = [UIColor blackColor];
+        self.allowSearch = NO;
     }
     return self;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setAllowSearch:(BOOL)allowSearch {
+    _allowSearch = allowSearch;
+    self.selectView.allowSearch = allowSearch;
+    
+    if (allowSearch) {
+        self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+        self.searchBar.delegate = self;
+        self.tableView.tableHeaderView = self.searchBar;
+        
+        self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+        self.searchController.searchResultsDataSource = self;
+        self.searchController.searchResultsDelegate = self;
+        self.searchController.delegate = self;
+        
+//        [self.view addSubview:self.searchBar];
+        
+    } else {
+        self.searchController = nil;
+        [self.searchBar removeFromSuperview];
+//        self.tableView.tableHeaderView = nil;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//- (UITableView *)tableView {
+//    return self.selectView.tableView;
+//}
+//
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//- (UISearchBar *)searchBar {
+//    return self.selectView.searchBar;
+//}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+//    [self.view addSubview:self.tableView];
+    
+//    if (self.allowSearch) {
+//        [self.view addSubview:self.searchBar];
+//    }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//- (UIView *)view {
+//    return self.selectView;
+//}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -127,15 +205,9 @@ static NSString *CellIdentifier = @"Cell";
         NSIndexPath *selectedIndexPath = [self.selectedIndexPaths lastObject];
         
         [self.tableView scrollToRowAtIndexPath:selectedIndexPath
-                              atScrollPosition:UITableViewScrollPositionMiddle
+                              atScrollPosition:UITableViewScrollPositionTop
                                       animated:NO];
     }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
 }
 
 
@@ -155,8 +227,8 @@ static NSString *CellIdentifier = @"Cell";
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSArray *)sectionOrders {
     return (nil == _sectionOrders) ?
-        [[self.sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] :
-        _sectionOrders;
+    [[self.sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] :
+    _sectionOrders;
 }
 
 
@@ -180,7 +252,28 @@ static NSString *CellIdentifier = @"Cell";
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+- (NSArray *)searchItems {
+    if (nil == _searchItems) {
+        NSString *column = self.searchPropertyName ? self.searchPropertyName : @"SELF";
+        NSString *stringPredicate = [NSString stringWithFormat:@"%@ CONTAINS[cd] \"%@\"", column, self.searchBar.text];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:stringPredicate];
+        _searchItems = [self.items filteredArrayUsingPredicate:predicate];
+    }
+    
+    return _searchItems;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)objectWithIndexPath:(NSIndexPath *)indexPath {
+    if (self.searchController.active) {
+        if ([self.searchItems count] == 0) {
+            return nil;
+        }
+        
+        return [self.searchItems objectAtIndex:indexPath.row];
+    }
+    
     return [[self itemsFromSection:indexPath.section] objectAtIndex:indexPath.row];
 }
 
@@ -199,22 +292,25 @@ static NSString *CellIdentifier = @"Cell";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setSelectedIndexPathsWithObject:(id)object {
-    [self setSelectedIndexPathsWithObjects:[NSArray arrayWithObject:object]];
+    if (object) {
+        [self setSelectedIndexPathsWithObjects:[NSArray arrayWithObject:object]];
+    }
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setSelectedIndexPathsWithObjects:(NSArray *)objects {
+    if (objects.count == 0) {
+        return;
+    }
+    
     [objects enumerateObjectsUsingBlock:^(id objectWeSearch, NSUInteger idx, BOOL *stopObjectFinding) {
         [self.sections enumerateKeysAndObjectsUsingBlock:^(id key, NSArray *sectionItems, BOOL *stopSectionEnumerating) {
             [sectionItems enumerateObjectsUsingBlock:^(id possibleObject, NSUInteger itemsIdx, BOOL *stopItemsEnumerating) {
-                if (objectWeSearch == possibleObject ||
-                    [objectWeSearch isEqual:possibleObject] ||
-                    (nil != self.selectedObjectBlock && self.selectedObjectBlock(possibleObject))) {
-                    
+                if (objectWeSearch == possibleObject || [objectWeSearch isEqual:possibleObject]) {
                     NSIndexPath *objectIndexPath = [NSIndexPath indexPathForRow:itemsIdx
                                                                       inSection:[self.sectionOrders indexOfObject:key]];
-
+                    
                     [self.selectedIndexPaths addObject:objectIndexPath];
                     
                     *stopItemsEnumerating = YES;
@@ -234,12 +330,20 @@ static NSString *CellIdentifier = @"Cell";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (self.searchDisplayController.active) {
+        return 1;
+    }
+    
     return [self.sections count];
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (self.searchDisplayController.active) {
+        return [self.searchItems count];
+    }
+    
     return [[self itemsFromSection:section] count];
 }
 
@@ -257,25 +361,20 @@ static NSString *CellIdentifier = @"Cell";
     if (nil == cell) {
         cell = [[self.cellClass alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.textLabel.textColor = self.textColor;
     }
     
     id object = [self objectWithIndexPath:indexPath];
     
-    if (![object isKindOfClass:[NSString class]]) {
-        
-        if (nil != self.textForObjectBlock) {
-            object = self.textForObjectBlock(object);
-        } else {
-            object = nil;
-        }
-        
+    if (nil != self.textForObjectBlock) {
+        object = self.textForObjectBlock(object);
+    } else if (![object isKindOfClass:[NSString class]]) {
+        object = nil;
     }
     
     cell.textLabel.text = (NSString *)object;
     
     cell.accessoryType = [self.selectedIndexPaths containsObject:indexPath] ?
-                         UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     
     return cell;
 }
@@ -291,10 +390,18 @@ static NSString *CellIdentifier = @"Cell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSMutableArray *indexPathsToReload = [NSMutableArray arrayWithObject:indexPath];
     
+    if (self.searchController.active) {
+        id object = [self objectWithIndexPath:indexPath];
+        NSUInteger objectIndex = [self.items indexOfObject:object];
+        indexPath = [NSIndexPath indexPathForRow:objectIndex inSection:0];
+        [self.searchController setActive:NO animated:YES];
+    }
+    
     if ([self.selectedIndexPaths containsObject:indexPath]) {
         if (YES == self.allowEmpty || (self.selectedIndexPaths.count > 1 && NO == self.allowEmpty) ) {
             [self.selectedIndexPaths removeObject:indexPath];
         }
+        
     } else {
         if (NO == self.multiSelection) {
             [indexPathsToReload addObjectsFromArray:self.selectedIndexPaths];
@@ -310,11 +417,100 @@ static NSString *CellIdentifier = @"Cell";
                           atScrollPosition:self.scrollToRowScrollPositionOnSelect
                                   animated:(UITableViewScrollPositionNone != self.scrollToRowScrollPositionOnSelect) ? YES : NO];
     
-//    [self.tableView reloadRowsAtIndexPaths:indexPathsToReload
-//                          withRowAnimation:UITableViewRowAnimationNone];
+    //    [self.tableView reloadRowsAtIndexPaths:indexPathsToReload
+    //                          withRowAnimation:UITableViewRowAnimationNone];
     
     if (nil != self.selectBlock)
         self.selectBlock(self.selectedIndexPaths, self);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark UISearchBarDelegate
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)correctSearchDisplayFrames {
+    // Update search bar frame.
+    CGRect superviewFrame = self.searchDisplayController.searchBar.superview.frame;
+    superviewFrame.origin.y = 0.f;
+    self.searchDisplayController.searchBar.superview.frame = superviewFrame;
+    
+    // Strech dimming view.
+    UIView *dimmingView = PSPDFViewWithSuffix(self.view, @"DimmingView");
+    if (dimmingView) {
+        CGRect dimmingFrame = dimmingView.superview.frame;
+        dimmingFrame.origin.y = self.searchDisplayController.searchBar.frame.size.height;
+        dimmingFrame.size.height = self.view.frame.size.height - dimmingFrame.origin.y;
+        dimmingView.superview.frame = dimmingFrame;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setAllViewsExceptSearchHidden:(BOOL)hidden animated:(BOOL)animated {
+    [UIView animateWithDuration:animated ? 0.825f : 0.f animations:^{
+        for (UIView *view in self.tableView.subviews) {
+            if (view != self.searchDisplayController.searchResultsTableView &&
+                view != self.searchDisplayController.searchBar) {
+                view.alpha = hidden ? 0.f : 1.f;
+            }
+        }
+    }];
+}
+
+// This fixes UISearchBarController on iOS 7. rdar://14800556
+- (void)correctFramesForSearchDisplayControllerBeginSearch:(BOOL)beginSearch {
+//    if (PSPDFIsUIKitFlatMode()) {
+//        [self.navigationController setNavigationBarHidden:beginSearch animated:YES];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self correctSearchDisplayFrames];
+//        });
+//        [self setAllViewsExceptSearchHidden:beginSearch animated:YES];
+//        [UIView animateWithDuration:0.25f animations:^{
+//            self.searchDisplayController.searchResultsTableView.alpha = beginSearch ? 1.f : 0.f;
+//        }];
+//    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+    _searchItems = nil;
+    return YES;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+    
+}
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
+//    [self correctFramesForSearchDisplayControllerBeginSearch:YES];
+//    [self correctSearchDisplayFrames];
+}
+
+- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
+//    [self correctSearchDisplayFrames];
+}
+
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+//    [self correctFramesForSearchDisplayControllerBeginSearch:NO];
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
+    // HACK: iOS 7 requires a cruel workaround to show the search table view.
+//    if (PSPDFIsUIKitFlatMode()) {
+//        controller.searchResultsTableView.contentInset = UIEdgeInsetsMake(self.searchDisplayController.searchBar.frame.size.height, 0.f, 0.f, 0.f);
+//    }
 }
 
 
@@ -348,5 +544,42 @@ static NSString *CellIdentifier = @"Cell";
     return items;
 }
 
+
+@end
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+@implementation BWSelectView
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.tableView = [[UITableView alloc] init];
+        self.searchBar = [[UISearchBar alloc] init];
+    }
+    return self;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    self.tableView.frame = self.bounds;
+//    ITLOG(@"tableview %@", self.tableView);
+    
+    if (self.allowSearch) {
+        
+        self.searchBar.frame = CGRectMake(0, 0, self.frame.size.width, 40);
+        
+        CGRect tableViewFrame = self.tableView.frame;
+        tableViewFrame.origin.y = self.searchBar.frame.size.height;
+        tableViewFrame.size.height = tableViewFrame.size.height - tableViewFrame.origin.y;
+        self.tableView.frame = tableViewFrame;
+        
+    }
+}
 
 @end

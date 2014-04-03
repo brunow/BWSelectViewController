@@ -18,13 +18,15 @@
 #import <UIKit/UIKit.h>
 
 @class BWSelectViewController;
+@class BWSelectView;
 
 typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths, BWSelectViewController *controller);
-typedef BOOL(^BWSelectViewControllerSelectedObject)(id object);
 
 typedef NSString *(^BWSelectViewControllerTextForObjectBlock)(id object);
+typedef BOOL(^BWSelectViewControllerSelectedObject)(id object);
 
-@interface BWSelectViewController : UITableViewController
+@interface BWSelectViewController : UITableViewController <
+UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, copy) NSDictionary *sections;
 @property (nonatomic, strong) BWSelectViewControllerDidSelectBlock selectBlock;
@@ -37,8 +39,12 @@ typedef NSString *(^BWSelectViewControllerTextForObjectBlock)(id object);
 @property (nonatomic, assign) BOOL dropDownSection;
 @property (nonatomic, copy) BWSelectViewControllerTextForObjectBlock textForObjectBlock;
 @property (nonatomic, assign) UITableViewScrollPosition scrollToRowScrollPositionOnSelect;
+@property (nonatomic, assign) BOOL allowSearch;
+@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) UISearchDisplayController *searchController;
+@property (nonatomic, strong) NSString *searchPropertyName;
 @property (nonatomic, copy) BWSelectViewControllerSelectedObject selectedObjectBlock;
-@property (nonatomic, strong) UIColor *textColor;
+@property (nonatomic, strong) BWSelectView *selectView;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection
@@ -53,9 +59,9 @@ typedef NSString *(^BWSelectViewControllerTextForObjectBlock)(id object);
          selectedItems:(NSArray *)selectedItems
            selectBlock:(BWSelectViewControllerDidSelectBlock)selectBlock;
 
-- (void)setSelectedObjectBlock:(BWSelectViewControllerSelectedObject)selectedObjectBlock;
-
 - (void)setDidSelectBlock:(BWSelectViewControllerDidSelectBlock)didSelectBlock;
+
+- (void)setSelectedObjectBlock:(BWSelectViewControllerSelectedObject)selectedObjectBlock;
 
 - (void)setSlectedIndexPaths:(NSArray *)selectedIndexPaths;
 
