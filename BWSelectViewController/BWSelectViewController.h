@@ -23,6 +23,7 @@
 typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths, BWSelectViewController *controller);
 
 typedef NSString *(^BWSelectViewControllerTextForObjectBlock)(id object);
+typedef NSAttributedString *(^BWSelectViewControllerAttributedTextForObjectBlock)(id object);
 typedef BOOL(^BWSelectViewControllerSelectedObject)(id object);
 
 @interface BWSelectViewController : UITableViewController <
@@ -37,7 +38,9 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 @property (nonatomic, strong) NSArray *sectionOrders;
 @property (nonatomic, strong) NSArray *items;
 @property (nonatomic, assign) BOOL dropDownSection;
+@property (nonatomic, assign) NSUInteger textLabelNumberOfLines;
 @property (nonatomic, copy) BWSelectViewControllerTextForObjectBlock textForObjectBlock;
+@property (nonatomic, copy) BWSelectViewControllerAttributedTextForObjectBlock attributedTextForObjectBlock;
 @property (nonatomic, assign) UITableViewScrollPosition scrollToRowScrollPositionOnSelect;
 @property (nonatomic, assign) BOOL allowSearch;
 @property (nonatomic, strong) UISearchBar *searchBar;

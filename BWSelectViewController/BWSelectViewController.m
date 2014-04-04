@@ -137,6 +137,7 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
         self.dropDownSection = NO;
         self.scrollToRowScrollPositionOnSelect = UITableViewScrollPositionNone;
         self.allowSearch = NO;
+        self.textLabelNumberOfLines = 1;
     }
     return self;
 }
@@ -361,17 +362,24 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
     if (nil == cell) {
         cell = [[self.cellClass alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.numberOfLines = self.textLabelNumberOfLines;
     }
     
     id object = [self objectWithIndexPath:indexPath];
     
     if (nil != self.textForObjectBlock) {
         object = self.textForObjectBlock(object);
-    } else if (![object isKindOfClass:[NSString class]]) {
-        object = nil;
+        
+    } else if (nil != self.attributedTextForObjectBlock) {
+        object = self.attributedTextForObjectBlock(object);
     }
     
-    cell.textLabel.text = (NSString *)object;
+    if ([object isKindOfClass:[NSString class]]) {
+        cell.textLabel.text = object;
+        
+    } else if ([object isKindOfClass:[NSAttributedString class]]) {
+        cell.textLabel.attributedText = object;
+    }
     
     cell.accessoryType = [self.selectedIndexPaths containsObject:indexPath] ?
     UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
