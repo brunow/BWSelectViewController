@@ -184,9 +184,6 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.tableView.tableHeaderView = self.tableHeaderView;
-    self.tableView.tableFooterView = self.tableFooterView;
-    
 //    [self.view addSubview:self.tableView];
     
 //    if (self.allowSearch) {
@@ -204,6 +201,9 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    self.tableView.tableHeaderView = self.tableHeaderView;
+    self.tableView.tableFooterView = self.tableFooterView;
     
     if (self.selectedIndexPaths.count > 0) {
         NSIndexPath *selectedIndexPath = [self.selectedIndexPaths lastObject];

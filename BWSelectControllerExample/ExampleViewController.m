@@ -31,6 +31,20 @@
     // Do any additional setup after loading the view from its nib.
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    self.navigationController.navigationBarHidden = YES;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    self.navigationController.navigationBarHidden = NO;
+}
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -43,6 +57,26 @@
     BWSelectViewController *vc = [[BWSelectViewController alloc] init];
     vc.items = [NSArray arrayWithObjects:@"Item1", @"Item2", @"Item3", @"Item4", nil];
     vc.multiSelection = NO;
+    
+    [vc setDidSelectBlock:^(NSArray *selectedIndexPaths, BWSelectViewController *controller) {
+        NSLog(@"%@", selectedIndexPaths);
+    }];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (IBAction)didPressHeaderViewSelect:(id)sender
+{
+    UILabel *label = [[UILabel alloc] init];
+    label.text = @"Header view";
+    label.textColor = [UIColor redColor];
+    [label sizeToFit];
+    
+    BWSelectViewController *vc = [[BWSelectViewController alloc] init];
+    vc.items = [NSArray arrayWithObjects:@"Item1", @"Item2", @"Item3", @"Item4", nil];
+    vc.multiSelection = NO;
+    vc.tableHeaderView = label;
+    NSLog(@"vc.tableHeaderView = label;");
     
     [vc setDidSelectBlock:^(NSArray *selectedIndexPaths, BWSelectViewController *controller) {
         NSLog(@"%@", selectedIndexPaths);
