@@ -48,6 +48,8 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 @property (nonatomic, strong) NSString *searchPropertyName;
 @property (nonatomic, copy) BWSelectViewControllerSelectedObject selectedObjectBlock;
 @property (nonatomic, strong) BWSelectView *selectView;
+@property (nonatomic, strong) UIView *tableHeaderView;
+@property (nonatomic, strong) UIView *tableFooterView;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection

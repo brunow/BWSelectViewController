@@ -184,6 +184,9 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.tableView.tableHeaderView = self.tableHeaderView;
+    self.tableView.tableFooterView = self.tableFooterView;
+    
 //    [self.view addSubview:self.tableView];
     
 //    if (self.allowSearch) {
