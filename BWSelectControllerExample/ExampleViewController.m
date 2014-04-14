@@ -52,11 +52,27 @@
     // e.g. self.myOutlet = nil;
 }
 
+- (IBAction)didPressEmptyView:(id)sender
+{
+    BWSelectViewController *vc = [[BWSelectViewController alloc] init];
+    
+    UILabel *label = [[UILabel alloc] init];
+    label.text = @"No items :(";
+    [label sizeToFit];
+    
+    vc.emptyView = label;
+    
+//    vc.items = [NSArray arrayWithObjects:@"Item1", @"Item2", @"Item3", @"Item4", nil];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (IBAction)didPressSimpleSelect:(id)sender
 {
     BWSelectViewController *vc = [[BWSelectViewController alloc] init];
     vc.items = [NSArray arrayWithObjects:@"Item1", @"Item2", @"Item3", @"Item4", nil];
     vc.multiSelection = NO;
+    vc.allowSearch = YES;
     
     [vc setDidSelectBlock:^(NSArray *selectedIndexPaths, BWSelectViewController *controller) {
         NSLog(@"%@", selectedIndexPaths);

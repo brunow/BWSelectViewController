@@ -50,6 +50,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 @property (nonatomic, strong) BWSelectView *selectView;
 @property (nonatomic, strong) UIView *tableHeaderView;
 @property (nonatomic, strong) UIView *tableFooterView;
+@property (nonatomic, strong) UIView *emptyView;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection

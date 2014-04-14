@@ -23,6 +23,8 @@ static NSString *CellIdentifier = @"Cell";
 #define ITEMS_KEY @"items"
 
 
+// Thanks to Peter Steinberger
+// https://gist.githubusercontent.com/steipete/6829002/raw/e1e285991b30b4881d2c9c83a7b52642ebca7b32/FixUISearchDisplayController.m
 static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
     if (!view || classNameSuffix.length == 0) return nil;
     
@@ -158,26 +160,11 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
         self.searchController.searchResultsDelegate = self;
         self.searchController.delegate = self;
         
-//        [self.view addSubview:self.searchBar];
-        
     } else {
         self.searchController = nil;
         [self.searchBar removeFromSuperview];
-//        self.tableView.tableHeaderView = nil;
     }
 }
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//- (UITableView *)tableView {
-//    return self.selectView.tableView;
-//}
-//
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//- (UISearchBar *)searchBar {
-//    return self.selectView.searchBar;
-//}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,6 +176,16 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 //    if (self.allowSearch) {
 //        [self.view addSubview:self.searchBar];
 //    }
+    
+    [self loadItems];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)loadItems {
+    [self.tableView reloadData];
+    
+    [self showEmptyView:![self hasAnyItems]];
 }
 
 
@@ -327,6 +324,36 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)showEmptyView:(BOOL)show {
+    BOOL isAddedToTableView = self.emptyView.superview;
+    
+    if ((show && isAddedToTableView) || (!show && !isAddedToTableView)) {
+        return;
+    }
+    
+    if (show) {
+        [self.tableView addSubview:self.emptyView];
+        CGRect frame = self.emptyView.frame;
+        frame.origin.x = (self.view.frame.size.width - frame.size.width) / 2;
+        frame.origin.y = (self.view.frame.size.height - frame.size.height) / 2;
+        self.emptyView.frame = frame;
+        
+    } else {
+        [self.emptyView removeFromSuperview];
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setEmptyView:(UIView *)emptyView {
+    if (emptyView != _emptyView) {
+        _emptyView = emptyView;
+        [self loadItems];
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Table view data source
@@ -442,6 +469,8 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 #pragma mark UISearchBarDelegate
 
 
+// Thanks to Peter Steinberger
+// https://gist.githubusercontent.com/steipete/6829002/raw/e1e285991b30b4881d2c9c83a7b52642ebca7b32/FixUISearchDisplayController.m
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)correctSearchDisplayFrames {
     // Update search bar frame.
@@ -460,6 +489,8 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 }
 
 
+// Thanks to Peter Steinberger
+// https://gist.githubusercontent.com/steipete/6829002/raw/e1e285991b30b4881d2c9c83a7b52642ebca7b32/FixUISearchDisplayController.m
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setAllViewsExceptSearchHidden:(BOOL)hidden animated:(BOOL)animated {
     [UIView animateWithDuration:animated ? 0.825f : 0.f animations:^{
@@ -472,19 +503,6 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
     }];
 }
 
-// This fixes UISearchBarController on iOS 7. rdar://14800556
-- (void)correctFramesForSearchDisplayControllerBeginSearch:(BOOL)beginSearch {
-//    if (PSPDFIsUIKitFlatMode()) {
-//        [self.navigationController setNavigationBarHidden:beginSearch animated:YES];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [self correctSearchDisplayFrames];
-//        });
-//        [self setAllViewsExceptSearchHidden:beginSearch animated:YES];
-//        [UIView animateWithDuration:0.25f animations:^{
-//            self.searchDisplayController.searchResultsTableView.alpha = beginSearch ? 1.f : 0.f;
-//        }];
-//    }
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
@@ -505,23 +523,15 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 }
 
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
-//    [self correctFramesForSearchDisplayControllerBeginSearch:YES];
-//    [self correctSearchDisplayFrames];
 }
 
 - (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
-//    [self correctSearchDisplayFrames];
 }
 
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-//    [self correctFramesForSearchDisplayControllerBeginSearch:NO];
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
-    // HACK: iOS 7 requires a cruel workaround to show the search table view.
-//    if (PSPDFIsUIKitFlatMode()) {
-//        controller.searchResultsTableView.contentInset = UIEdgeInsetsMake(self.searchDisplayController.searchBar.frame.size.height, 0.f, 0.f, 0.f);
-//    }
 }
 
 
@@ -529,6 +539,27 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Private
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (BOOL)hasAnyItems {
+    if (self.items) {
+        return [self.items count] > 0;
+    }
+    
+    __block BOOL hasAnyItems = NO;
+    
+    if ([self.sections count] > 0) {
+        [self.sections enumerateKeysAndObjectsUsingBlock:^(id key, NSArray *items, BOOL *stop) {
+            if ([items count] > 0) {
+                hasAnyItems = YES;
+                *stop = YES;
+            }
+        }];
+    }
+    
+    return hasAnyItems;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -579,7 +610,6 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
     [super layoutSubviews];
     
     self.tableView.frame = self.bounds;
-//    ITLOG(@"tableview %@", self.tableView);
     
     if (self.allowSearch) {
         
