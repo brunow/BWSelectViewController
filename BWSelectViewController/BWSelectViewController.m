@@ -325,7 +325,7 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)showEmptyView:(BOOL)show {
-    BOOL isAddedToTableView = self.emptyView.superview;
+    BOOL isAddedToTableView = !!self.emptyView.superview;
     
     if ((show && isAddedToTableView) || (!show && !isAddedToTableView)) {
         return;
