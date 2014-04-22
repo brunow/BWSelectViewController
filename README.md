@@ -8,7 +8,7 @@ Controller that show a list of items that can be selectable.
 
 **Copy** **BWSelectViewController** dir into your project.
 
-Or with **Cocoapods**
+Or with **CocoaPods**
 
 	pod 'BWSelectViewController'
 
