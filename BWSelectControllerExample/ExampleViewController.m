@@ -62,8 +62,6 @@
     
     vc.emptyView = label;
     
-//    vc.items = [NSArray arrayWithObjects:@"Item1", @"Item2", @"Item3", @"Item4", nil];
-    
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -92,7 +90,6 @@
     vc.items = [NSArray arrayWithObjects:@"Item1", @"Item2", @"Item3", @"Item4", nil];
     vc.multiSelection = NO;
     vc.tableHeaderView = label;
-    NSLog(@"vc.tableHeaderView = label;");
     
     [vc setDidSelectBlock:^(NSArray *selectedIndexPaths, BWSelectViewController *controller) {
         NSLog(@"%@", selectedIndexPaths);

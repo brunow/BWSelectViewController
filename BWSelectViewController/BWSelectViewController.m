@@ -153,16 +153,19 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
     if (allowSearch) {
         self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
         self.searchBar.delegate = self;
-        self.tableView.tableHeaderView = self.searchBar;
+        self.tableHeaderView = self.searchBar;
         
         self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
         self.searchController.searchResultsDataSource = self;
         self.searchController.searchResultsDelegate = self;
         self.searchController.delegate = self;
+        NSLog(@"%@", self.tableView.tableHeaderView);
+        NSLog(@"%@", self.searchBar);
         
     } else {
         self.searchController = nil;
-        [self.searchBar removeFromSuperview];
+        self.tableView.tableHeaderView = nil;
+        self.tableHeaderView = nil;
     }
 }
 
@@ -170,12 +173,6 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-//    [self.view addSubview:self.tableView];
-    
-//    if (self.allowSearch) {
-//        [self.view addSubview:self.searchBar];
-//    }
     
     [self loadItems];
 }
@@ -187,12 +184,6 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
     
     [self showEmptyView:![self hasAnyItems]];
 }
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//- (UIView *)view {
-//    return self.selectView;
-//}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
