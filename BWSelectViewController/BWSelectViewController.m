@@ -423,7 +423,7 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
         id object = [self objectWithIndexPath:indexPath];
         NSUInteger objectIndex = [self.items indexOfObject:object];
         indexPath = [NSIndexPath indexPathForRow:objectIndex inSection:0];
-        [self.searchController setActive:NO animated:YES];
+        //        [self.searchController setActive:NO animated:YES];
     }
     
     if ([self.selectedIndexPaths containsObject:indexPath]) {
@@ -440,11 +440,15 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
         [self.selectedIndexPaths addObject:indexPath];
     }
     
-    [self.tableView reloadData];
-    
-    [self.tableView scrollToRowAtIndexPath:indexPath
-                          atScrollPosition:self.scrollToRowScrollPositionOnSelect
-                                  animated:(UITableViewScrollPositionNone != self.scrollToRowScrollPositionOnSelect) ? YES : NO];
+    if (self.searchController.active == NO) {
+        [self.tableView reloadData];
+        
+        [self.tableView scrollToRowAtIndexPath:indexPath
+                              atScrollPosition:self.scrollToRowScrollPositionOnSelect
+                                      animated:(UITableViewScrollPositionNone != self.scrollToRowScrollPositionOnSelect) ? YES : NO];
+    } else {
+        [self.searchDisplayController.searchResultsTableView reloadData];
+    }
     
     //    [self.tableView reloadRowsAtIndexPaths:indexPathsToReload
     //                          withRowAnimation:UITableViewRowAnimationNone];
@@ -520,6 +524,7 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 }
 
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+    [self.tableView reloadData];
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
