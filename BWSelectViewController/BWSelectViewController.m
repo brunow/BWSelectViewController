@@ -418,6 +418,7 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSMutableArray *indexPathsToReload = [NSMutableArray arrayWithObject:indexPath];
+    id object = [self objectWithIndexPath:indexPath];
     
     if (self.searchController.active) {
         id object = [self objectWithIndexPath:indexPath];
@@ -429,15 +430,27 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
     if ([self.selectedIndexPaths containsObject:indexPath]) {
         if (YES == self.allowEmpty || (self.selectedIndexPaths.count > 1 && NO == self.allowEmpty) ) {
             [self.selectedIndexPaths removeObject:indexPath];
+            
+            if (self.objectSelectionDidChange) {
+                self.objectSelectionDidChange(object, NO);
+            }
         }
         
     } else {
         if (NO == self.multiSelection) {
             [indexPathsToReload addObjectsFromArray:self.selectedIndexPaths];
             [self.selectedIndexPaths removeAllObjects];
+            
+            if (self.objectSelectionDidChange) {
+                self.objectSelectionDidChange(object, NO);
+            }
         }
         
         [self.selectedIndexPaths addObject:indexPath];
+        
+        if (self.objectSelectionDidChange) {
+            self.objectSelectionDidChange(object, YES);
+        }
     }
     
     if (self.searchController.active == NO) {

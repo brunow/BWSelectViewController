@@ -25,6 +25,7 @@ typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths,
 typedef NSString *(^BWSelectViewControllerTextForObjectBlock)(id object);
 typedef NSAttributedString *(^BWSelectViewControllerAttributedTextForObjectBlock)(id object);
 typedef BOOL(^BWSelectViewControllerSelectedObject)(id object);
+typedef void(^BWSelectViewControllerObjectSelectionDidChange)(id object, BOOL selected);
 
 @interface BWSelectViewController : UITableViewController <
 UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
@@ -47,6 +48,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 @property (nonatomic, strong) UISearchDisplayController *searchController;
 @property (nonatomic, strong) NSString *searchPropertyName;
 @property (nonatomic, copy) BWSelectViewControllerSelectedObject selectedObjectBlock;
+@property (nonatomic, copy) BWSelectViewControllerObjectSelectionDidChange objectSelectionDidChange;
 @property (nonatomic, strong) BWSelectView *selectView;
 @property (nonatomic, strong) UIView *tableHeaderView;
 @property (nonatomic, strong) UIView *tableFooterView;
@@ -82,5 +84,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 - (void)setSelectedIndexPathsWithObject:(id)object;
 
 - (void)setSelectedIndexPathsWithObjects:(NSArray *)objects;
+
+- (void)setObjectSelectionDidChange:(BWSelectViewControllerObjectSelectionDidChange)objectSelectionDidChange;
 
 @end
