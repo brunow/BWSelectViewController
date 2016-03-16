@@ -432,7 +432,7 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
             [self.selectedIndexPaths removeObject:indexPath];
             
             if (self.objectSelectionDidChange) {
-                self.objectSelectionDidChange(object, NO);
+                self.objectSelectionDidChange(self, object, NO);
             }
         }
         
@@ -442,14 +442,14 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
             [self.selectedIndexPaths removeAllObjects];
             
             if (self.objectSelectionDidChange) {
-                self.objectSelectionDidChange(object, NO);
+                self.objectSelectionDidChange(self, object, NO);
             }
         }
         
         [self.selectedIndexPaths addObject:indexPath];
         
         if (self.objectSelectionDidChange) {
-            self.objectSelectionDidChange(object, YES);
+            self.objectSelectionDidChange(self, object, YES);
         }
     }
     

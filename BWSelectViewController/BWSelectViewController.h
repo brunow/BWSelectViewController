@@ -25,7 +25,7 @@ typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths,
 typedef NSString *(^BWSelectViewControllerTextForObjectBlock)(id object);
 typedef NSAttributedString *(^BWSelectViewControllerAttributedTextForObjectBlock)(id object);
 typedef BOOL(^BWSelectViewControllerSelectedObject)(id object);
-typedef void(^BWSelectViewControllerObjectSelectionDidChange)(id object, BOOL selected);
+typedef void(^BWSelectViewControllerObjectSelectionDidChange)(BWSelectViewController *vc, id object, BOOL selected);
 
 @interface BWSelectViewController : UITableViewController <
 UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
