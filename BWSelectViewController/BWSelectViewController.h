@@ -53,6 +53,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 @property (nonatomic, strong) UIView *tableHeaderView;
 @property (nonatomic, strong) UIView *tableFooterView;
 @property (nonatomic, strong) UIView *emptyView;
+@property (nonatomic, assign, getter=shouldScrollToLastSelectedRowAtReload) BOOL scrollToLastSelectedRowAtReload;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection

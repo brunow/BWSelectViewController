@@ -140,6 +140,7 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
         self.scrollToRowScrollPositionOnSelect = UITableViewScrollPositionNone;
         self.allowSearch = NO;
         self.textLabelNumberOfLines = 1;
+        self.scrollToLastSelectedRowAtReload = YES;
     }
     return self;
 }
@@ -193,7 +194,7 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
     self.tableView.tableHeaderView = self.tableHeaderView;
     self.tableView.tableFooterView = self.tableFooterView;
     
-    if (self.selectedIndexPaths.count > 0) {
+    if (self.selectedIndexPaths.count > 0 && self.shouldScrollToLastSelectedRowAtReload) {
         NSIndexPath *selectedIndexPath = [self.selectedIndexPaths lastObject];
         
         [self.tableView scrollToRowAtIndexPath:selectedIndexPath
