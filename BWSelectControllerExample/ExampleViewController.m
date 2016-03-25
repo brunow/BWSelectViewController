@@ -65,6 +65,18 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (IBAction)didPressCustomCell:(id)sender
+{
+    BWSelectViewController *vc = [[BWSelectViewController alloc] init];
+    vc.items = [NSArray arrayWithObjects:@"Item1", @"Item2", @"Item3", @"Item4", nil];
+    
+    [vc setWillDisplayCellBlock:^(BWSelectViewController *vc, UITableViewCell *cell, id object) {
+        cell.detailTextLabel.text = @"Detail";
+    }];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (IBAction)didPressSimpleSelect:(id)sender
 {
     BWSelectViewController *vc = [[BWSelectViewController alloc] init];

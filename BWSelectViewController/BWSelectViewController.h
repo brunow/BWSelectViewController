@@ -24,6 +24,7 @@ typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths,
 
 typedef NSString *(^BWSelectViewControllerTextForObjectBlock)(id object);
 typedef NSAttributedString *(^BWSelectViewControllerAttributedTextForObjectBlock)(id object);
+typedef void(^BWSelectViewControllerWillDisplayCellBlock)(BWSelectViewController *vc, UITableViewCell *cell, id object);
 typedef BOOL(^BWSelectViewControllerSelectedObject)(id object);
 typedef void(^BWSelectViewControllerObjectSelectionDidChange)(BWSelectViewController *vc, id object, BOOL selected);
 
@@ -54,6 +55,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 @property (nonatomic, strong) UIView *tableFooterView;
 @property (nonatomic, strong) UIView *emptyView;
 @property (nonatomic, assign, getter=shouldScrollToLastSelectedRowAtReload) BOOL scrollToLastSelectedRowAtReload;
+@property (nonatomic, copy) BWSelectViewControllerWillDisplayCellBlock willDisplayCellBlock;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection
@@ -77,6 +79,8 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 - (void)setSections:(NSDictionary *)sections orders:(NSArray *)orders;
 
 - (void)setTextForObjectBlock:(BWSelectViewControllerTextForObjectBlock)textForObjectBlock;
+
+- (void)setWillDisplayCellBlock:(BWSelectViewControllerWillDisplayCellBlock)willDisplayCellBlock;
 
 - (id)objectWithIndexPath:(NSIndexPath *)indexPath;
 
