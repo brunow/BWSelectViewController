@@ -27,12 +27,14 @@ typedef NSAttributedString *(^BWSelectViewControllerAttributedTextForObjectBlock
 typedef void(^BWSelectViewControllerWillDisplayCellBlock)(BWSelectViewController *vc, UITableViewCell *cell, id object);
 typedef BOOL(^BWSelectViewControllerSelectedObject)(id object);
 typedef void(^BWSelectViewControllerObjectSelectionDidChange)(BWSelectViewController *vc, id object, BOOL selected);
+typedef void(^BWSelectViewControllerShouldSearch)(BWSelectViewController *vc, NSString *searchString);
 
 @interface BWSelectViewController : UITableViewController <
 UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, copy) NSDictionary *sections;
 @property (nonatomic, strong) BWSelectViewControllerDidSelectBlock selectBlock;
+@property (nonatomic, strong) BWSelectViewControllerShouldSearch shouldSearchBlock;
 @property (nonatomic, readonly) NSMutableArray *selectedIndexPaths;
 @property (nonatomic, assign) BOOL multiSelection;
 @property (nonatomic, assign) Class cellClass;
@@ -57,6 +59,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 @property (nonatomic, assign, getter=shouldScrollToLastSelectedRowAtReload) BOOL scrollToLastSelectedRowAtReload;
 @property (nonatomic, copy) BWSelectViewControllerWillDisplayCellBlock willDisplayCellBlock;
 @property (nonatomic, strong) NSDictionary *sectionHeaderViews;
+@property (nonatomic, strong) NSArray *searchItems;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection
@@ -92,5 +95,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 - (void)setSelectedIndexPathsWithObjects:(NSArray *)objects;
 
 - (void)setObjectSelectionDidChange:(BWSelectViewControllerObjectSelectionDidChange)objectSelectionDidChange;
+
+- (void)setShouldSearchBlock:(BWSelectViewControllerShouldSearch)shouldSearchBlock;
 
 @end

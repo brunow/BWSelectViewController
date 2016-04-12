@@ -54,8 +54,6 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 @interface BWSelectViewController ()
 
-@property (nonatomic, strong) NSArray *searchItems;
-
 - (NSArray *)itemsFromSection:(NSInteger)section;
 
 - (BOOL)isSectionSelected:(NSInteger)section;
@@ -76,6 +74,7 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 @synthesize selectBlock = _selectBlock;
 @synthesize sectionOrders = _sectionOrders;
 @synthesize dropDownSection = _dropDownSection;
+@synthesize searchItems = _searchItems;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -246,7 +245,7 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSArray *)searchItems {
-    if (nil == _searchItems) {
+    if (nil == _searchItems && nil == self.shouldSearchBlock) {
         NSString *column = self.searchPropertyName ? self.searchPropertyName : @"SELF";
         NSString *stringPredicate = [NSString stringWithFormat:@"%@ CONTAINS[cd] \"%@\"", column, self.searchBar.text];
         NSPredicate *predicate = [NSPredicate predicateWithFormat:stringPredicate];
@@ -254,6 +253,12 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
     }
     
     return _searchItems;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setSearchItems:(NSArray *)searchItems {
+    _searchItems = searchItems;
+    [self.searchController.searchResultsTableView reloadData];
 }
 
 
@@ -534,6 +539,11 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
     _searchItems = nil;
+    
+    if (self.shouldSearchBlock) {
+        self.shouldSearchBlock(self, searchString);
+    }
+    
     return YES;
 }
 

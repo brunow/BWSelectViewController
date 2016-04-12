@@ -93,6 +93,27 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (IBAction)didPressNetworkSearch:(id)sender
+{
+    BWSelectViewController *vc = [[BWSelectViewController alloc] init];
+//    vc.items = [NSArray arrayWithObjects:@"Item1", @"Item2", @"Item3", @"Item4", nil];
+    vc.allowSearch = YES;
+    
+    [vc setShouldSearchBlock:^(BWSelectViewController *controller, NSString *searchString) {
+        NSString *column = @"SELF";
+        NSString *stringPredicate = [NSString stringWithFormat:@"%@ CONTAINS[cd] \"%@\"", column, searchString];
+        NSArray *items = [NSArray arrayWithObjects:@"Item1", @"Item2", @"Item3", @"Item4", nil];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:stringPredicate];
+        controller.searchItems = [items filteredArrayUsingPredicate:predicate];
+    }];
+    
+    [vc setDidSelectBlock:^(NSArray *selectedIndexPaths, BWSelectViewController *controller) {
+        NSLog(@"%@", selectedIndexPaths);
+    }];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (IBAction)didPressHeaderViewSelect:(id)sender
 {
     UILabel *label = [[UILabel alloc] init];
