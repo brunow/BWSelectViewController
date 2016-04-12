@@ -388,7 +388,18 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 40;
+    NSString *title = [self tableView:tableView titleForHeaderInSection:section];
+    UIView *headerView = [self tableView:tableView viewForHeaderInSection:section];
+    BOOL hasNoTitle = nil == title || title.length == 0;
+    if (hasNoTitle && nil == headerView) {
+        return 0;
+    }
+    
+    if (headerView) {
+        return headerView.frame.size.height;
+    }
+    
+    return 25;
 }
 
 
