@@ -376,6 +376,16 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
     return [self.sectionOrders objectAtIndex:section];
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    return [self.sectionHeaderViews objectForKey:@(section)];
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 40;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

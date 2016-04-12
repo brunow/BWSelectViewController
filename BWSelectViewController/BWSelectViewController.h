@@ -56,6 +56,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 @property (nonatomic, strong) UIView *emptyView;
 @property (nonatomic, assign, getter=shouldScrollToLastSelectedRowAtReload) BOOL scrollToLastSelectedRowAtReload;
 @property (nonatomic, copy) BWSelectViewControllerWillDisplayCellBlock willDisplayCellBlock;
+@property (nonatomic, strong) NSDictionary *sectionHeaderViews;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection

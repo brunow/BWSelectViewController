@@ -77,6 +77,8 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+
+
 - (IBAction)didPressSimpleSelect:(id)sender
 {
     BWSelectViewController *vc = [[BWSelectViewController alloc] init];
@@ -102,6 +104,24 @@
     vc.items = [NSArray arrayWithObjects:@"Item1", @"Item2", @"Item3", @"Item4", nil];
     vc.multiSelection = NO;
     vc.tableHeaderView = label;
+    
+    [vc setDidSelectBlock:^(NSArray *selectedIndexPaths, BWSelectViewController *controller) {
+        NSLog(@"%@", selectedIndexPaths);
+    }];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (IBAction)sectionCustomHeaderView {
+    BWSelectViewController *vc = [[BWSelectViewController alloc] init];
+    vc.items = [NSArray arrayWithObjects:@"Item1", @"Item2", @"Item3", @"Item4", nil];
+    
+    UILabel *label = [[UILabel alloc] init];
+    label.text = @"Header view";
+    label.textColor = [UIColor redColor];
+    [label sizeToFit];
+    
+    vc.sectionHeaderViews = @{ @(0): label };
     
     [vc setDidSelectBlock:^(NSArray *selectedIndexPaths, BWSelectViewController *controller) {
         NSLog(@"%@", selectedIndexPaths);
