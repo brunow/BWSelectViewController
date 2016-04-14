@@ -77,7 +77,26 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-
+- (IBAction)didPressLoadMore {
+    BWSelectViewController *vc = [[BWSelectViewController alloc] init];
+    NSArray *items1 = [NSArray arrayWithObjects:@"Item1", @"Item2", @"Item3", @"Item4", @"Item1", @"Item2", @"Item3", @"Item4", @"Item1", @"Item2", @"Item3", @"Item4", nil];
+    NSArray *items2 = [NSArray arrayWithObjects:@"Item1", @"Item2", nil];
+    NSDictionary *sections = [NSDictionary dictionaryWithObjectsAndKeys:items1, @"section1", items2, @"section2", nil];
+    [vc setSections:sections orders:[NSArray arrayWithObjects:@"section1", @"section2", nil] loadMore:YES];
+    vc.multiSelection = YES;
+    vc.allowEmpty = NO;
+    
+    [vc setDidSelectBlock:^(NSArray *selectedIndexPaths, BWSelectViewController *controller) {
+        NSLog(@"%@", selectedIndexPaths);
+    }];
+    
+    [vc setShouldLoadMoreBlock:^(BWSelectViewController *vc) {
+        NSDictionary *sections = [NSDictionary dictionaryWithObjectsAndKeys:items1, @"section1", items2, @"section2", items1, @"sections3", nil];
+        [vc setSections:sections orders:[NSArray arrayWithObjects:@"section1", @"section2", @"sections3", nil] loadMore:NO];
+    }];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 - (IBAction)didPressSimpleSelect:(id)sender
 {

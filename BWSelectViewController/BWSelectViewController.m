@@ -17,7 +17,11 @@
 
 #import "BWSelectViewController.h"
 
+#import "BWSelectViewControllerLoadMoreViewCell.h"
+#import "BWSelectViewControllerLoadMoreItem.h"
+
 static NSString *CellIdentifier = @"Cell";
+static NSString *LoadMoreIdentifier = @"LoadMore";
 
 #define TITLE_KEY @"title"
 #define ITEMS_KEY @"items"
@@ -159,8 +163,6 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
         self.searchController.searchResultsDataSource = self;
         self.searchController.searchResultsDelegate = self;
         self.searchController.delegate = self;
-        NSLog(@"%@", self.tableView.tableHeaderView);
-        NSLog(@"%@", self.searchBar);
         
     } else {
         self.searchController = nil;
@@ -227,6 +229,10 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setItems:(NSArray *)items {
     self.sections = [NSDictionary dictionaryWithObject:items forKey:@""];
+    
+    if ([self isViewLoaded]) {
+        [self.tableView reloadData];
+    }
 }
 
 
@@ -238,8 +244,30 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setSections:(NSDictionary *)sections orders:(NSArray *)orders {
-    self.sections = sections;
-    self.sectionOrders = orders;
+    [self setSections:sections orders:orders loadMore:NO];
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setSections:(NSDictionary *)sections orders:(NSArray *)orders loadMore:(BOOL)loadMore {
+    if (loadMore) {
+        NSMutableDictionary *mutableSections = [sections mutableCopy];
+        NSString *key = @"";
+        BWSelectViewControllerLoadMoreItem *loadMore = [[BWSelectViewControllerLoadMoreItem alloc] init];
+        [mutableSections setObject:@[loadMore] forKey:key];
+        self.sections = [mutableSections copy];
+        
+        NSMutableArray *mutableOrders = [orders mutableCopy];
+        [mutableOrders addObject:@""];
+        self.sectionOrders = [mutableOrders copy];
+        
+    } else {
+        self.sections = sections;
+        self.sectionOrders = orders;
+    }
+    
+    if ([self isViewLoaded]) {
+        [self.tableView reloadData];
+    }
 }
 
 
@@ -405,6 +433,20 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    id object = [self objectWithIndexPath:indexPath];
+    
+    if ([object isKindOfClass:[BWSelectViewControllerLoadMoreItem class]]) {
+        BWSelectViewControllerLoadMoreViewCell *cell = [tableView dequeueReusableCellWithIdentifier:LoadMoreIdentifier];
+        
+        if (nil == cell) {
+            cell = [[BWSelectViewControllerLoadMoreViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LoadMoreIdentifier];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.textLabel.numberOfLines = self.textLabelNumberOfLines;
+        }
+        
+        return cell;
+    }
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (nil == cell) {
@@ -412,8 +454,6 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.textLabel.numberOfLines = self.textLabelNumberOfLines;
     }
-    
-    id object = [self objectWithIndexPath:indexPath];
     
     if (nil != self.textForObjectBlock) {
         object = self.textForObjectBlock(object);
@@ -440,6 +480,10 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
     if (self.willDisplayCellBlock) {
         id object = [self objectWithIndexPath:indexPath];
         self.willDisplayCellBlock(self, cell, object);
+    }
+    
+    if ([cell isKindOfClass:[BWSelectViewControllerLoadMoreViewCell class]] && self.shouldLoadMoreBlock) {
+        self.shouldLoadMoreBlock(self);
     }
 }
 

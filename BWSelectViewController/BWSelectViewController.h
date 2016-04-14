@@ -22,6 +22,7 @@
 
 typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths, BWSelectViewController *controller);
 
+typedef void(^BWSelectViewControllerLoadMoreBlock)(BWSelectViewController *vc);
 typedef NSString *(^BWSelectViewControllerTextForObjectBlock)(id object);
 typedef NSAttributedString *(^BWSelectViewControllerAttributedTextForObjectBlock)(id object);
 typedef void(^BWSelectViewControllerWillDisplayCellBlock)(BWSelectViewController *vc, UITableViewCell *cell, id object);
@@ -60,6 +61,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 @property (nonatomic, copy) BWSelectViewControllerWillDisplayCellBlock willDisplayCellBlock;
 @property (nonatomic, strong) NSDictionary *sectionHeaderViews;
 @property (nonatomic, strong) NSArray *searchItems;
+@property (nonatomic, strong) BWSelectViewControllerLoadMoreBlock shouldLoadMoreBlock;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection
@@ -97,5 +99,9 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 - (void)setObjectSelectionDidChange:(BWSelectViewControllerObjectSelectionDidChange)objectSelectionDidChange;
 
 - (void)setShouldSearchBlock:(BWSelectViewControllerShouldSearch)shouldSearchBlock;
+
+- (void)setSections:(NSDictionary *)sections orders:(NSArray *)orders loadMore:(BOOL)loadMore;
+
+- (void)setShouldLoadMoreBlock:(BWSelectViewControllerLoadMoreBlock)shouldLoadMoreBlock;
 
 @end

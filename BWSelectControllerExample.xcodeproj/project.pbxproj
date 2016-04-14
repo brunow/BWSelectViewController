@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		E7E4B50A18F2F22D001340E9 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7E4B50918F2F22D001340E9 /* Default-568h@2x.png */; };
+		E7ED6AD91CBF9DCB00799C0A /* BWSelectViewControllerLoadMoreItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E7ED6AD81CBF9DCB00799C0A /* BWSelectViewControllerLoadMoreItem.m */; };
+		E7ED6ADC1CBF9DE500799C0A /* BWSelectViewControllerLoadMoreViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E7ED6ADB1CBF9DE500799C0A /* BWSelectViewControllerLoadMoreViewCell.m */; };
 		E7FF5FA6158C715400D4D79A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7FF5FA5158C715400D4D79A /* UIKit.framework */; };
 		E7FF5FA8158C715400D4D79A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7FF5FA7158C715400D4D79A /* Foundation.framework */; };
 		E7FF5FAA158C715400D4D79A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7FF5FA9158C715400D4D79A /* CoreGraphics.framework */; };
@@ -23,6 +25,10 @@
 
 /* Begin PBXFileReference section */
 		E7E4B50918F2F22D001340E9 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		E7ED6AD71CBF9DCB00799C0A /* BWSelectViewControllerLoadMoreItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWSelectViewControllerLoadMoreItem.h; sourceTree = "<group>"; };
+		E7ED6AD81CBF9DCB00799C0A /* BWSelectViewControllerLoadMoreItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWSelectViewControllerLoadMoreItem.m; sourceTree = "<group>"; };
+		E7ED6ADA1CBF9DE500799C0A /* BWSelectViewControllerLoadMoreViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWSelectViewControllerLoadMoreViewCell.h; sourceTree = "<group>"; };
+		E7ED6ADB1CBF9DE500799C0A /* BWSelectViewControllerLoadMoreViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWSelectViewControllerLoadMoreViewCell.m; sourceTree = "<group>"; };
 		E7FF5FA1158C715400D4D79A /* BWSelectControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BWSelectControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7FF5FA5158C715400D4D79A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E7FF5FA7158C715400D4D79A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -117,6 +123,10 @@
 			children = (
 				E7FF5FC6158C74A700D4D79A /* BWSelectViewController.h */,
 				E7FF5FC7158C74A700D4D79A /* BWSelectViewController.m */,
+				E7ED6AD71CBF9DCB00799C0A /* BWSelectViewControllerLoadMoreItem.h */,
+				E7ED6AD81CBF9DCB00799C0A /* BWSelectViewControllerLoadMoreItem.m */,
+				E7ED6ADA1CBF9DE500799C0A /* BWSelectViewControllerLoadMoreViewCell.h */,
+				E7ED6ADB1CBF9DE500799C0A /* BWSelectViewControllerLoadMoreViewCell.m */,
 			);
 			path = BWSelectViewController;
 			sourceTree = "<group>";
@@ -186,7 +196,9 @@
 			files = (
 				E7FF5FB4158C715400D4D79A /* main.m in Sources */,
 				E7FF5FB8158C715400D4D79A /* AppDelegate.m in Sources */,
+				E7ED6ADC1CBF9DE500799C0A /* BWSelectViewControllerLoadMoreViewCell.m in Sources */,
 				E7FF5FBB158C715400D4D79A /* BWSelectControllerExample.xcdatamodeld in Sources */,
+				E7ED6AD91CBF9DCB00799C0A /* BWSelectViewControllerLoadMoreItem.m in Sources */,
 				E7FF5FC8158C74A700D4D79A /* BWSelectViewController.m in Sources */,
 				E7FF5FCF158C789600D4D79A /* ExampleViewController.m in Sources */,
 			);
