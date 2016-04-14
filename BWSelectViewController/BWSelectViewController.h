@@ -62,6 +62,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 @property (nonatomic, strong) NSDictionary *sectionHeaderViews;
 @property (nonatomic, strong) NSArray *searchItems;
 @property (nonatomic, strong) BWSelectViewControllerLoadMoreBlock shouldLoadMoreBlock;
+@property (nonatomic, assign, getter=shouldShowHeaderTitle) BOOL showHeaderTitle;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection

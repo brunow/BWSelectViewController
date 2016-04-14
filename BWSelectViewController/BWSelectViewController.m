@@ -144,6 +144,7 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
         self.allowSearch = NO;
         self.textLabelNumberOfLines = 1;
         self.scrollToLastSelectedRowAtReload = YES;
+        self.showHeaderTitle = YES;
     }
     return self;
 }
@@ -406,6 +407,10 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (NO == self.shouldShowHeaderTitle) {
+        return nil;
+    }
+    
     return [self.sectionOrders objectAtIndex:section];
 }
 
