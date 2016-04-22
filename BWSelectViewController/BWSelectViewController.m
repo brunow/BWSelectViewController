@@ -117,6 +117,7 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
         [self.selectedIndexPaths addObjectsFromArray:selectedItems];
         self.selectBlock = selectBlock;
         [self setSections:sections orders:orders];
+        self.oneSelectionBySection = NO;
     }
     return self;
 }
@@ -145,6 +146,7 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
         self.textLabelNumberOfLines = 1;
         self.scrollToLastSelectedRowAtReload = YES;
         self.showHeaderTitle = YES;
+        self.oneSelectionBySection = NO;
     }
     return self;
 }
@@ -501,54 +503,12 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSMutableArray *indexPathsToReload = [NSMutableArray arrayWithObject:indexPath];
-    id object = [self objectWithIndexPath:indexPath];
-    
-    if (self.searchController.active) {
-        id object = [self objectWithIndexPath:indexPath];
-        NSUInteger objectIndex = [self.items indexOfObject:object];
-        indexPath = [NSIndexPath indexPathForRow:objectIndex inSection:0];
-        //        [self.searchController setActive:NO animated:YES];
-    }
-    
-    if ([self.selectedIndexPaths containsObject:indexPath]) {
-        if (YES == self.allowEmpty || (self.selectedIndexPaths.count > 1 && NO == self.allowEmpty) ) {
-            [self.selectedIndexPaths removeObject:indexPath];
-            
-            if (self.objectSelectionDidChange) {
-                self.objectSelectionDidChange(self, object, NO);
-            }
-        }
+    if (self.oneSelectionBySection) {
+        [self handleOneRowPerSectionRowSelectionAtIndexPath:indexPath];
         
     } else {
-        if (NO == self.multiSelection) {
-            [indexPathsToReload addObjectsFromArray:self.selectedIndexPaths];
-            [self.selectedIndexPaths removeAllObjects];
-            
-            if (self.objectSelectionDidChange) {
-                self.objectSelectionDidChange(self, object, NO);
-            }
-        }
-        
-        [self.selectedIndexPaths addObject:indexPath];
-        
-        if (self.objectSelectionDidChange) {
-            self.objectSelectionDidChange(self, object, YES);
-        }
+        [self handleNormalRowSelectionAtIndexPath:indexPath];
     }
-    
-    if (self.searchController.active == NO) {
-        [self.tableView reloadData];
-        
-        [self.tableView scrollToRowAtIndexPath:indexPath
-                              atScrollPosition:self.scrollToRowScrollPositionOnSelect
-                                      animated:(UITableViewScrollPositionNone != self.scrollToRowScrollPositionOnSelect) ? YES : NO];
-    } else {
-        [self.searchDisplayController.searchResultsTableView reloadData];
-    }
-    
-    //    [self.tableView reloadRowsAtIndexPaths:indexPathsToReload
-    //                          withRowAnimation:UITableViewRowAnimationNone];
     
     if (nil != self.selectBlock)
         self.selectBlock(self.selectedIndexPaths, self);
@@ -637,6 +597,96 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Private
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)handleNormalRowSelectionAtIndexPath:(NSIndexPath *)indexPath {
+    NSMutableArray *indexPathsToReload = [NSMutableArray arrayWithObject:indexPath];
+    id object = [self objectWithIndexPath:indexPath];
+    
+    if (self.searchController.active) {
+        id object = [self objectWithIndexPath:indexPath];
+        NSUInteger objectIndex = [self.items indexOfObject:object];
+        indexPath = [NSIndexPath indexPathForRow:objectIndex inSection:0];
+        //        [self.searchController setActive:NO animated:YES];
+    }
+    
+    if ([self.selectedIndexPaths containsObject:indexPath]) {
+        if (YES == self.allowEmpty || (self.selectedIndexPaths.count > 1 && NO == self.allowEmpty) ) {
+            [self.selectedIndexPaths removeObject:indexPath];
+            
+            if (self.objectSelectionDidChange) {
+                self.objectSelectionDidChange(self, object, NO);
+            }
+        }
+        
+    } else {
+        if (NO == self.multiSelection) {
+            [indexPathsToReload addObjectsFromArray:self.selectedIndexPaths];
+            [self.selectedIndexPaths removeAllObjects];
+            
+            if (self.objectSelectionDidChange) {
+                self.objectSelectionDidChange(self, object, NO);
+            }
+        }
+        
+        [self.selectedIndexPaths addObject:indexPath];
+        
+        if (self.objectSelectionDidChange) {
+            self.objectSelectionDidChange(self, object, YES);
+        }
+    }
+    
+    if (self.searchController.active == NO) {
+        [self.tableView reloadData];
+        
+        [self.tableView scrollToRowAtIndexPath:indexPath
+                              atScrollPosition:self.scrollToRowScrollPositionOnSelect
+                                      animated:(UITableViewScrollPositionNone != self.scrollToRowScrollPositionOnSelect) ? YES : NO];
+    } else {
+        [self.searchDisplayController.searchResultsTableView reloadData];
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)handleOneRowPerSectionRowSelectionAtIndexPath:(NSIndexPath *)indexPath {
+    id object = [self objectWithIndexPath:indexPath];
+    NSIndexPath *indexPathForSelectedRowAtSection = [self indexPathForSelectedRowAtSection:indexPath.section];
+    BOOL hasSelectionForSection = !!indexPathForSelectedRowAtSection;
+    
+    if (hasSelectionForSection) {
+        [self.selectedIndexPaths removeObject:indexPathForSelectedRowAtSection];
+        id removedObject = [self objectWithIndexPath:indexPathForSelectedRowAtSection];
+        
+        if (self.objectSelectionDidChange) {
+            self.objectSelectionDidChange(self, removedObject, NO);
+        }
+    }
+    
+    [self.selectedIndexPaths addObject:indexPath];
+    
+    if (self.objectSelectionDidChange) {
+        self.objectSelectionDidChange(self, object, YES);
+    }
+    
+    [self.tableView reloadData];
+    
+    [self.tableView scrollToRowAtIndexPath:indexPath
+                          atScrollPosition:self.scrollToRowScrollPositionOnSelect
+                                  animated:(UITableViewScrollPositionNone != self.scrollToRowScrollPositionOnSelect) ? YES : NO];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (NSIndexPath *)indexPathForSelectedRowAtSection:(NSUInteger)section {
+    for (NSIndexPath *selectedIndexPath in self.selectedIndexPaths) {
+        if (selectedIndexPath.section == section) {
+            return selectedIndexPath;
+        }
+    }
+    
+    return nil;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
