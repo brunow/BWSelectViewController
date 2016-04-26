@@ -94,6 +94,8 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 
 - (NSArray *)selectedObjects;
 
+- (void)deselectAll;
+
 - (void)setSelectedIndexPathsWithObject:(id)object;
 
 - (void)setSelectedIndexPathsWithObjects:(NSArray *)objects;

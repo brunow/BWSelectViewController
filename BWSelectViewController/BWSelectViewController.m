@@ -240,6 +240,13 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)deselectAll {
+    [self.selectedIndexPaths removeAllObjects];
+    [self.tableView reloadData];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSArray *)items {
     return [[self.sections allValues] objectAtIndex:0];
 }
