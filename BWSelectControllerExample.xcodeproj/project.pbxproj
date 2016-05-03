@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E75CD8641CD8E81B00004363 /* tux.png in Resources */ = {isa = PBXBuildFile; fileRef = E75CD8631CD8E81B00004363 /* tux.png */; };
 		E7E4B50A18F2F22D001340E9 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7E4B50918F2F22D001340E9 /* Default-568h@2x.png */; };
 		E7ED6AD91CBF9DCB00799C0A /* BWSelectViewControllerLoadMoreItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E7ED6AD81CBF9DCB00799C0A /* BWSelectViewControllerLoadMoreItem.m */; };
 		E7ED6ADC1CBF9DE500799C0A /* BWSelectViewControllerLoadMoreViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E7ED6ADB1CBF9DE500799C0A /* BWSelectViewControllerLoadMoreViewCell.m */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E75CD8631CD8E81B00004363 /* tux.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tux.png; sourceTree = "<group>"; };
 		E7E4B50918F2F22D001340E9 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		E7ED6AD71CBF9DCB00799C0A /* BWSelectViewControllerLoadMoreItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWSelectViewControllerLoadMoreItem.h; sourceTree = "<group>"; };
 		E7ED6AD81CBF9DCB00799C0A /* BWSelectViewControllerLoadMoreItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWSelectViewControllerLoadMoreItem.m; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 		E7FF5FAD158C715400D4D79A /* BWSelectControllerExample */ = {
 			isa = PBXGroup;
 			children = (
+				E75CD8631CD8E81B00004363 /* tux.png */,
 				E7FF5FB6158C715400D4D79A /* AppDelegate.h */,
 				E7FF5FB7158C715400D4D79A /* AppDelegate.m */,
 				E7FF5FB9158C715400D4D79A /* BWSelectControllerExample.xcdatamodeld */,
@@ -184,6 +187,7 @@
 				E7FF5FB2158C715400D4D79A /* InfoPlist.strings in Resources */,
 				E7FF5FD0158C789600D4D79A /* ExampleViewController.xib in Resources */,
 				E7E4B50A18F2F22D001340E9 /* Default-568h@2x.png in Resources */,
+				E75CD8641CD8E81B00004363 /* tux.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

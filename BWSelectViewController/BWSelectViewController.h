@@ -24,6 +24,7 @@ typedef void(^BWSelectViewControllerDidSelectBlock)(NSArray *selectedIndexPaths,
 
 typedef void(^BWSelectViewControllerLoadMoreBlock)(BWSelectViewController *vc);
 typedef NSString *(^BWSelectViewControllerTextForObjectBlock)(id object);
+typedef UIImage *(^BWSelectViewControllerImageForObjectBlock)(id object);
 typedef NSAttributedString *(^BWSelectViewControllerAttributedTextForObjectBlock)(id object);
 typedef void(^BWSelectViewControllerWillDisplayCellBlock)(BWSelectViewController *vc, UITableViewCell *cell, id object);
 typedef BOOL(^BWSelectViewControllerSelectedObject)(id object);
@@ -45,6 +46,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 @property (nonatomic, assign) BOOL dropDownSection;
 @property (nonatomic, assign) NSUInteger textLabelNumberOfLines;
 @property (nonatomic, copy) BWSelectViewControllerTextForObjectBlock textForObjectBlock;
+@property (nonatomic, copy) BWSelectViewControllerImageForObjectBlock imageForObjectBlock;
 @property (nonatomic, copy) BWSelectViewControllerAttributedTextForObjectBlock attributedTextForObjectBlock;
 @property (nonatomic, assign) UITableViewScrollPosition scrollToRowScrollPositionOnSelect;
 @property (nonatomic, assign) BOOL allowSearch;
@@ -95,6 +97,8 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 - (NSArray *)selectedObjects;
 
 - (void)deselectAll;
+
+- (void)setImageForObjectBlock:(BWSelectViewControllerImageForObjectBlock)imageForObjectBlock;
 
 - (void)setSelectedIndexPathsWithObject:(id)object;
 

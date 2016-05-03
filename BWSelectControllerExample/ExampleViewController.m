@@ -98,6 +98,18 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (IBAction)didPressImageSelect:(id)sender
+{
+    BWSelectViewController *vc = [[BWSelectViewController alloc] init];
+    vc.items = [NSArray arrayWithObjects:@"Item1", @"Item2", @"Item3", @"Item4", nil];
+    
+    [vc setImageForObjectBlock:^UIImage *(id object) {
+        return [UIImage imageNamed:@"tux.png"];
+    }];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (IBAction)didPressSimpleSelect:(id)sender
 {
     BWSelectViewController *vc = [[BWSelectViewController alloc] init];

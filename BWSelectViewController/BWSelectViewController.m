@@ -469,6 +469,11 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
         cell.textLabel.numberOfLines = self.textLabelNumberOfLines;
     }
     
+    if (self.imageForObjectBlock) {
+        UIImage *image = self.imageForObjectBlock(object);
+        cell.imageView.image = image;
+    }
+    
     if (nil != self.textForObjectBlock) {
         object = self.textForObjectBlock(object);
         
