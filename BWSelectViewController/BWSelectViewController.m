@@ -474,6 +474,12 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
         cell.imageView.image = image;
     }
     
+    id detailObject = nil;
+    
+    if (nil != self.detailAttributedTextForObjectBlock) {
+        detailObject = self.detailAttributedTextForObjectBlock(object);
+    }
+    
     if (nil != self.textForObjectBlock) {
         object = self.textForObjectBlock(object);
         
@@ -486,6 +492,13 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
         
     } else if ([object isKindOfClass:[NSAttributedString class]]) {
         cell.textLabel.attributedText = object;
+    }
+    
+    if ([detailObject isKindOfClass:[NSString class]]) {
+        cell.detailTextLabel.text = detailObject;
+        
+    } else if ([detailObject isKindOfClass:[NSAttributedString class]]) {
+        cell.detailTextLabel.attributedText = detailObject;
     }
     
     cell.accessoryType = [self.selectedIndexPaths containsObject:indexPath] ?

@@ -48,6 +48,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 @property (nonatomic, copy) BWSelectViewControllerTextForObjectBlock textForObjectBlock;
 @property (nonatomic, copy) BWSelectViewControllerImageForObjectBlock imageForObjectBlock;
 @property (nonatomic, copy) BWSelectViewControllerAttributedTextForObjectBlock attributedTextForObjectBlock;
+@property (nonatomic, copy) BWSelectViewControllerAttributedTextForObjectBlock detailAttributedTextForObjectBlock;
 @property (nonatomic, assign) UITableViewScrollPosition scrollToRowScrollPositionOnSelect;
 @property (nonatomic, assign) BOOL allowSearch;
 @property (nonatomic, strong) UISearchBar *searchBar;
@@ -97,6 +98,10 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 - (NSArray *)selectedObjects;
 
 - (void)deselectAll;
+
+- (void)setAttributedTextForObjectBlock:(BWSelectViewControllerAttributedTextForObjectBlock)attributedTextForObjectBlock;
+
+- (void)setDetailAttributedTextForObjectBlock:(BWSelectViewControllerAttributedTextForObjectBlock)detailAttributedTextForObjectBlock;
 
 - (void)setImageForObjectBlock:(BWSelectViewControllerImageForObjectBlock)imageForObjectBlock;
 
