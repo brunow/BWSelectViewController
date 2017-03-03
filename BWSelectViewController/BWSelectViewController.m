@@ -148,6 +148,7 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
         self.showHeaderTitle = YES;
         self.oneSelectionBySection = NO;
         self.readonly = NO;
+        self.validationButtonTitle = @"Validate";
     }
     return self;
 }
@@ -185,6 +186,14 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)didValidateSelection {
+    if (self.didValidateSelectionBlock) {
+        self.didValidateSelectionBlock(self, self.selectedObjects);
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)loadItems {
     [self.tableView reloadData];
     
@@ -195,6 +204,11 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    if (self.didValidateSelectionBlock != nil) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.validationButtonTitle
+                                                                                  style:UIBarButtonItemStylePlain target:self action:@selector(didValidateSelection)];
+    }
     
     self.tableView.tableHeaderView = self.tableHeaderView;
     self.tableView.tableFooterView = self.tableFooterView;

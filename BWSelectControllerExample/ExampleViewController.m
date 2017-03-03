@@ -121,6 +121,10 @@
         NSLog(@"%@", selectedIndexPaths);
     }];
     
+    [vc setDidValidateSelectionBlock:^(BWSelectViewController *controller, NSArray *selectedObjects) {
+        NSLog(@"%@", selectedObjects);
+    }];
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 

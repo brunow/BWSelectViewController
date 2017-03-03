@@ -31,6 +31,8 @@ typedef BOOL(^BWSelectViewControllerSelectedObject)(id object);
 typedef void(^BWSelectViewControllerObjectSelectionDidChange)(BWSelectViewController *vc, id object, BOOL selected);
 typedef void(^BWSelectViewControllerShouldSearch)(BWSelectViewController *vc, NSString *searchString);
 
+typedef void(^BWSelectViewControllerDidValidateSelectionBlock)(BWSelectViewController *vc, NSArray *selectedObjects);
+
 @interface BWSelectViewController : UITableViewController <
 UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -49,6 +51,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 @property (nonatomic, copy) BWSelectViewControllerImageForObjectBlock imageForObjectBlock;
 @property (nonatomic, copy) BWSelectViewControllerAttributedTextForObjectBlock attributedTextForObjectBlock;
 @property (nonatomic, copy) BWSelectViewControllerAttributedTextForObjectBlock detailAttributedTextForObjectBlock;
+@property (nonatomic, copy) BWSelectViewControllerDidValidateSelectionBlock didValidateSelectionBlock;
 @property (nonatomic, assign) UITableViewScrollPosition scrollToRowScrollPositionOnSelect;
 @property (nonatomic, assign) BOOL allowSearch;
 @property (nonatomic, strong) UISearchBar *searchBar;
@@ -68,6 +71,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 @property (nonatomic, assign, getter=shouldShowHeaderTitle) BOOL showHeaderTitle;
 @property (nonatomic, assign) BOOL oneSelectionBySection;
 @property (nonatomic, assign) BOOL readonly;
+@property (nonatomic, copy) NSString *validationButtonTitle;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection
@@ -81,6 +85,8 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
             allowEmpty:(BOOL)allowEmpty
          selectedItems:(NSArray *)selectedItems
            selectBlock:(BWSelectViewControllerDidSelectBlock)selectBlock;
+
+- (void)setDidValidateSelectionBlock:(BWSelectViewControllerDidValidateSelectionBlock)didValidateSelectionBlock;
 
 - (void)setDidSelectBlock:(BWSelectViewControllerDidSelectBlock)didSelectBlock;
 
