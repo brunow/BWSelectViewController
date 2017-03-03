@@ -147,6 +147,7 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
         self.scrollToLastSelectedRowAtReload = YES;
         self.showHeaderTitle = YES;
         self.oneSelectionBySection = NO;
+        self.readonly = NO;
     }
     return self;
 }
@@ -528,6 +529,10 @@ static UIView *PSPDFViewWithSuffix(UIView *view, NSString *classNameSuffix) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.readonly) {
+        return;
+    }
+    
     if (self.oneSelectionBySection) {
         [self handleOneRowPerSectionRowSelectionAtIndexPath:indexPath];
         

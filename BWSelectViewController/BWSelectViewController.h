@@ -67,6 +67,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableView
 @property (nonatomic, strong) BWSelectViewControllerLoadMoreBlock shouldLoadMoreBlock;
 @property (nonatomic, assign, getter=shouldShowHeaderTitle) BOOL showHeaderTitle;
 @property (nonatomic, assign) BOOL oneSelectionBySection;
+@property (nonatomic, assign) BOOL readonly;
 
 - (id)initWithItems:(NSArray *)items
      multiselection:(BOOL)multiSelection
